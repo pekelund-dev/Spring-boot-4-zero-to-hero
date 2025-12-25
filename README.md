@@ -175,6 +175,28 @@ All code examples are available in the [examples directory](./examples) for easy
 #### [Appendix C: Useful Resources](./appendices/resources.md)
 #### [Appendix D: Migration Guide from Spring Boot 3.x](./appendices/migration-guide.md)
 
+## 🎮 Interactive Learning Platform
+
+**NEW!** Experience the course through our interactive web-based learning platform!
+
+✨ **Features:**
+- 🔐 Google OAuth authentication
+- ⚙️ Personalized learning paths based on your environment (Mac/Windows/Linux, Maven/Gradle, Java version, IDE)
+- 💻 Interactive code exercises with instant feedback
+- ❓ Chapter quizzes to test your knowledge
+- 🏆 Badge system and leaderboard for gamification
+- 📊 Progress tracking across all chapters
+- 🎯 Customized code examples based on your preferences
+
+**[Get Started with the Interactive Platform →](./interactive-platform/)**
+
+Run locally:
+```bash
+cd interactive-platform
+mvn spring-boot:run
+# Open http://localhost:8080
+```
+
 ## How to Use This Guide
 
 1. **Beginners**: Start from Chapter 1 and work your way through sequentially
@@ -182,6 +204,7 @@ All code examples are available in the [examples directory](./examples) for easy
 3. **Advanced**: Focus on Part V and VI for advanced concepts
 4. **Practice**: Complete all exercises and quizzes for hands-on experience
 5. **Experiment**: Clone the examples and modify them to deepen understanding
+6. **Interactive Mode**: Use the [interactive platform](./interactive-platform/) for a guided, gamified learning experience
 
 ## Prerequisites
 
