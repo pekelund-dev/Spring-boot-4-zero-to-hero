@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot 4 - Interactive Learning Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .auth-section {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .auth-section h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .google-login-btn {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+
+        .google-login-btn:hover {
+            background: #357ae8;
+        }
+
+        .setup-wizard {
+            display: none;
+            padding: 40px;
+        }
+
+        .setup-wizard h2 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .form-group select, .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group select:focus, .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .platform-content {
+            display: none;
+            padding: 40px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .chapters-list {
+            margin-top: 30px;
+        }
+
+        .chapter-item {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chapter-item:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .chapter-item h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .badge-display {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+        }
+
+        .code-editor {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin-top: 20px;
+        }
+
+        textarea.code-input {
+            width: 100%;
+            min-height: 200px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border: none;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .quiz-section {
+            margin-top: 30px;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-option {
+            padding: 10px;
+            margin: 10px 0;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .quiz-option:hover {
+            border-color: #667eea;
+        }
+
+        .quiz-option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Spring Boot 4 - Zero to Hero</h1>
+            <p>Interactive Learning Platform</p>
+        </header>
+
+        <!-- Authentication Section -->
+        <div class="auth-section" id="authSection">
+            <h2>Welcome to the Interactive Learning Platform!</h2>
+            <p style="margin: 20px 0; color: #666;">Sign in with Google to start your Spring Boot journey and track your progress.</p>
+            <button class="google-login-btn" onclick="loginWithGoogle()">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Sign in with Google
+            </button>
+            <p style="margin-top: 20px; color: #999; font-size: 14px;">
+                Note: This is a demo. Google OAuth is not configured in this environment.<br>
+                Click below to see a demo of the platform.
+            </p>
+            <button class="btn" onclick="showDemo()" style="margin-top: 15px;">
+                View Demo Mode
+            </button>
+        </div>
+
+        <!-- Setup Wizard -->
+        <div class="setup-wizard" id="setupWizard">
+            <h2>⚙️ Setup Your Learning Environment</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 30px;">
+                Tell us about your preferences so we can customize the course for you.
+            </p>
+
+            <div class="form-group">
+                <label for="os">Operating System</label>
+                <select id="os">
+                    <option value="MAC">macOS</option>
+                    <option value="WINDOWS">Windows</option>
+                    <option value="LINUX">Linux</option>
+                    <option value="WINDOWS_WSL2">Windows with WSL2</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="buildTool">Build Tool</label>
+                <select id="buildTool">
+                    <option value="MAVEN">Maven</option>
+                    <option value="GRADLE">Gradle</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="javaVersion">Java Version</label>
+                <select id="javaVersion">
+                    <option value="21">Java 21 (LTS)</option>
+                    <option value="23">Java 23</option>
+                    <option value="25">Java 25</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ide">IDE</label>
+                <select id="ide">
+                    <option value="INTELLIJ_IDEA">IntelliJ IDEA</option>
+                    <option value="VS_CODE">VS Code</option>
+                    <option value="ECLIPSE">Eclipse</option>
+                    <option value="NETBEANS">NetBeans</option>
+                </select>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn" onclick="savePreferences()">Start Learning! 🎉</button>
+            </div>
+        </div>
+
+        <!-- Platform Content -->
+        <div class="platform-content" id="platformContent">
+            <h2 style="margin-bottom: 30px; color: #333;">Your Learning Dashboard</h2>
+
+            <div class="dashboard">
+                <div class="card">
+                    <h3>📊 Progress</h3>
+                    <p><strong id="completedChapters">0</strong> of 13 chapters completed</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🏆 Badges</h3>
+                    <p><strong id="badgeCount">0</strong> badges earned</p>
+                    <div class="badge-display" id="badgeDisplay">
+                        <div class="badge">🌟 Beginner</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>💯 Quiz Score</h3>
+                    <p>Average: <strong id="averageScore">0</strong>%</p>
+                    <p style="margin-top: 10px;">Quizzes completed: <strong id="quizCount">0</strong></p>
+                </div>
+
+                <div class="card">
+                    <h3>⚙️ Your Setup</h3>
+                    <p><strong id="userOS">macOS</strong></p>
+                    <p><strong id="userBuildTool">Maven</strong></p>
+                    <p><strong id="userJava">Java 21</strong></p>
+                    <p><strong id="userIDE">IntelliJ IDEA</strong></p>
+                </div>
+            </div>
+
+            <div class="chapters-list">
+                <h3 style="margin-bottom: 20px; color: #333;">📚 Course Chapters</h3>
+                
+                <div class="chapter-item" onclick="openChapter('01')">
+                    <h4>Chapter 1: Introduction to Spring Boot 4.x</h4>
+                    <p>Learn about Spring Boot 4.x and why it's the best framework for modern Java development.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('02')">
+                    <h4>Chapter 2: Setting Up Your Development Environment</h4>
+                    <p>Configure your development environment with Java 21+, your IDE, and build tools.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('03')">
+                    <h4>Chapter 3: Core Concepts and Architecture</h4>
+                    <p>Understand IoC, Dependency Injection, and Spring Boot's auto-configuration.</p>
+                </div>
+
+                <div class="chapter-item">
+                    <h4>Chapter 4-13: Advanced Topics</h4>
+                    <p>REST APIs, Data Access, Security, Testing, Microservices, and more...</p>
+                </div>
+            </div>
+
+            <!-- Interactive Code Exercise Example -->
+            <div style="margin-top: 40px;">
+                <h3 style="margin-bottom: 20px; color: #333;">💻 Try an Interactive Exercise</h3>
+                <div class="card">
+                    <h4>Exercise: Create Your First Spring Boot Controller</h4>
+                    <p style="margin: 15px 0;">Create a simple REST controller that returns "Hello, Spring Boot 4!"</p>
+                    
+                    <textarea class="code-input" id="codeInput" placeholder="Write your code here...">@RestController
+public class HelloController {
+    
+    // Add your code here
+    
+}</textarea>
+
+                    <div style="margin-top: 15px; display: flex; gap: 10px;">
+                        <button class="btn" onclick="submitCode()">Submit Code</button>
+                        <button class="btn" style="background: #6c757d;" onclick="showHint()">Show Hint</button>
+                    </div>
+                    
+                    <div id="feedback" style="margin-top: 15px; padding: 15px; border-radius: 5px; display: none;"></div>
+                </div>
+            </div>
+
+            <!-- Quiz Example -->
+            <div class="quiz-section">
+                <h3 style="margin-bottom: 20px; color: #333;">❓ Sample Quiz Question</h3>
+                <div class="quiz-question">
+                    <h4>What does IoC stand for in Spring?</h4>
+                    <div class="quiz-option" onclick="selectOption(this, 'a')">
+                        A) Input Output Control
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, 'b')">
+                        B) Inversion of Control
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, 'c')">
+                        C) Internal Object Configuration
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, 'd')">
+                        D) Integrated Operation Container
+                    </div>
+                    <button class="btn" style="margin-top: 15px;" onclick="submitQuiz()">Submit Answer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let userPreferences = {
+            os: 'MAC',
+            buildTool: 'MAVEN',
+            javaVersion: '21',
+            ide: 'INTELLIJ_IDEA'
+        };
+
+        let selectedQuizAnswer = null;
+        let demoProgress = {
+            completedChapters: 0,
+            badges: 1,
+            quizScore: 0,
+            quizCount: 0
+        };
+
+        function loginWithGoogle() {
+            // In production, this would redirect to: /oauth2/authorization/google
+            alert('In a production environment, this would initiate Google OAuth login.\n\nFor now, use "View Demo Mode" to explore the platform.');
+        }
+
+        function showDemo() {
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('setupWizard').style.display = 'block';
+        }
+
+        function savePreferences() {
+            userPreferences.os = document.getElementById('os').value;
+            userPreferences.buildTool = document.getElementById('buildTool').value;
+            userPreferences.javaVersion = document.getElementById('javaVersion').value;
+            userPreferences.ide = document.getElementById('ide').value;
+
+            document.getElementById('setupWizard').style.display = 'none';
+            document.getElementById('platformContent').style.display = 'block';
+
+            // Update display
+            document.getElementById('userOS').textContent = userPreferences.os.replace('_', ' ');
+            document.getElementById('userBuildTool').textContent = userPreferences.buildTool;
+            document.getElementById('userJava').textContent = 'Java ' + userPreferences.javaVersion;
+            document.getElementById('userIDE').textContent = userPreferences.ide.replace('_', ' ');
+        }
+
+        function openChapter(chapterId) {
+            alert(`Opening Chapter ${chapterId}...\n\nIn the full platform, this would:\n- Show chapter content\n- Display interactive exercises\n- Provide code examples customized to your preferences\n- Track your progress`);
+            
+            // Demo: increment progress
+            demoProgress.completedChapters = Math.min(demoProgress.completedChapters + 1, 13);
+            updateDashboard();
+        }
+
+        function submitCode() {
+            const code = document.getElementById('codeInput').value;
+            const feedback = document.getElementById('feedback');
+            
+            if (code.includes('@GetMapping') && code.includes('return')) {
+                feedback.style.display = 'block';
+                feedback.style.background = '#d4edda';
+                feedback.style.color = '#155724';
+                feedback.innerHTML = '✅ Great job! Your solution is correct.<br>You successfully created a REST controller with a GET mapping.';
+                
+                // Award badge
+                demoProgress.badges++;
+                updateDashboard();
+            } else {
+                feedback.style.display = 'block';
+                feedback.style.background = '#f8d7da';
+                feedback.style.color = '#721c24';
+                feedback.innerHTML = '❌ Not quite right. Make sure to add a @GetMapping annotation and return a String.';
+            }
+        }
+
+        function showHint() {
+            alert('Hint: Use @GetMapping annotation to map a URL to your method.\nDon\'t forget to return a String message!');
+        }
+
+        function selectOption(element, answer) {
+            // Remove selection from all options
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            element.classList.add('selected');
+            selectedQuizAnswer = answer;
+        }
+
+        function submitQuiz() {
+            if (!selectedQuizAnswer) {
+                alert('Please select an answer first!');
+                return;
+            }
+
+            if (selectedQuizAnswer === 'b') {
+                alert('✅ Correct! IoC stands for Inversion of Control.\n\nInversion of Control is a fundamental principle in Spring where the framework manages object creation and lifecycle instead of the application code.');
+                demoProgress.quizCount++;
+                demoProgress.quizScore = ((demoProgress.quizScore * (demoProgress.quizCount - 1)) + 100) / demoProgress.quizCount;
+            } else {
+                alert('❌ Incorrect. The correct answer is "Inversion of Control".\n\nTry reviewing the Core Concepts chapter for more information.');
+                demoProgress.quizCount++;
+                demoProgress.quizScore = (demoProgress.quizScore * (demoProgress.quizCount - 1)) / demoProgress.quizCount;
+            }
+
+            updateDashboard();
+            selectedQuizAnswer = null;
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+        }
+
+        function updateDashboard() {
+            document.getElementById('completedChapters').textContent = demoProgress.completedChapters;
+            document.getElementById('progressFill').style.width = ((demoProgress.completedChapters / 13) * 100) + '%';
+            document.getElementById('badgeCount').textContent = demoProgress.badges;
+            document.getElementById('averageScore').textContent = Math.round(demoProgress.quizScore);
+            document.getElementById('quizCount').textContent = demoProgress.quizCount;
+
+            // Add new badges
+            const badgeDisplay = document.getElementById('badgeDisplay');
+            if (demoProgress.completedChapters >= 1 && demoProgress.badges >= 2) {
+                badgeDisplay.innerHTML = '<div class="badge">🌟 Beginner</div><div class="badge">🎯 First Chapter</div>';
+            }
+            if (demoProgress.completedChapters >= 3 && demoProgress.badges >= 3) {
+                badgeDisplay.innerHTML += '<div class="badge">🚀 Fast Learner</div>';
+            }
+            if (demoProgress.quizScore >= 80) {
+                badgeDisplay.innerHTML += '<div class="badge">💯 Quiz Master</div>';
+            }
+        }
+    </script>
+</body>
+</html>
