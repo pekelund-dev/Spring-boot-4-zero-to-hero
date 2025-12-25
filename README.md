@@ -2,9 +2,11 @@
 
 Welcome to the ultimate Spring Boot 4.x learning guide! This comprehensive resource is designed to take you from a complete beginner to a Spring Boot expert. Whether you're just starting your journey or looking to master advanced concepts, this guide has something for everyone.
 
+> **Note**: This guide is forward-looking and prepares you for Spring Boot 4.x based on current Spring Boot patterns and the announced roadmap. While Spring Boot 4.0 has not been officially released at the time of writing, this resource focuses on modern Spring Boot development practices, Java 21+ features, and anticipated enhancements that will benefit current Spring Boot 3.x developers and prepare them for future versions.
+
 ## About This Guide
 
-This learning site focuses exclusively on **Spring Boot 4.x** and its ecosystem. Each chapter includes:
+This learning site focuses on **modern Spring Boot development** with forward-looking content for 4.x. Each chapter includes:
 - 📚 Comprehensive explanations and concepts
 - 💻 Practical, hands-on examples
 - 🏋️ Coding exercises to reinforce learning

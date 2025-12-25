@@ -1,12 +1,14 @@
 # Appendix D: Migration Guide from Spring Boot 3.x to 4.x
 
-This guide helps you migrate existing Spring Boot 3.x applications to Spring Boot 4.x. While Spring Boot maintains backward compatibility where possible, there are important changes to be aware of.
+This guide helps you prepare for migrating existing Spring Boot 3.x applications to future Spring Boot 4.x releases. While Spring Boot maintains backward compatibility where possible, there are important changes to be aware of.
 
-> **Note**: Spring Boot 4.0 is used as a reference for this guide. As Spring Boot 4.x is built on concepts similar to 3.x but with enhancements, this guide focuses on conceptual improvements and best practices for migration.
+> **Note**: This is a forward-looking guide based on Spring Boot's evolution patterns and announced direction. Spring Boot 4.0 is not yet released at the time of writing. This guide focuses on anticipated enhancements, best practices, and conceptual improvements based on the Spring Boot roadmap. Always refer to official Spring Boot 4.0 release notes when available for the definitive migration guide.
 
 ## Overview
 
-### What's New in Spring Boot 4.x
+### What's Expected in Spring Boot 4.x
+
+Based on Spring Boot's evolution patterns and the roadmap, anticipated features include:
 
 - Enhanced Java 21+ support with Virtual Threads
 - Improved native image compilation with GraalVM
@@ -14,6 +16,8 @@ This guide helps you migrate existing Spring Boot 3.x applications to Spring Boo
 - Performance improvements and reduced startup time
 - Updated dependency versions across the ecosystem
 - Enhanced security features
+
+> **Important**: These are anticipated features based on current trends. Check official release notes when Spring Boot 4.0 is released.
 
 ### Migration Complexity
 
