@@ -59,7 +59,7 @@ An interactive web-based learning platform for the Spring Boot 4 course, featuri
 - **Spring Data JPA** for persistence
 - **H2 Database** (development) / PostgreSQL (production)
 - **JWT** for token management
-- **Java 21** with modern features
+- **Java 17+** (supports Java 21 and Java 25)
 
 ### Frontend
 - HTML5/CSS3/JavaScript
@@ -70,9 +70,28 @@ An interactive web-based learning platform for the Spring Boot 4 course, featuri
 ## Getting Started
 
 ### Prerequisites
-- Java 21 or higher
+- Java 17, 21, or 25 (Java 21 LTS recommended)
 - Maven 3.6+
 - Google OAuth2 credentials (for authentication)
+
+### Java Version Configuration
+
+The project is configured to support multiple Java versions. To use Java 21 or 25:
+
+1. Ensure you have JDK 21 or 25 installed:
+```bash
+java -version
+```
+
+2. Update `pom.xml` to use your Java version:
+```xml
+<properties>
+    <java.version>21</java.version>  <!-- or 25 -->
+    ...
+</properties>
+```
+
+3. The platform will automatically adapt examples and instructions based on the Java version selected in the user preferences wizard.
 
 ### Installation
 
