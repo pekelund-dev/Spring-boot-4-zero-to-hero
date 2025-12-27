@@ -19,9 +19,8 @@
     <description>Interactive learning platform for Spring Boot 4 course</description>
     
     <properties>
-        <!-- Target Java version: 21+ (currently built with 17 for compatibility) -->
-        <!-- Update to 21 or 25 when running in environments with those JDK versions -->
-        <java.version>17</java.version>
+        <!-- Java 25 is now the default target version -->
+        <java.version>25</java.version>
         <jwt.version>0.12.3</jwt.version>
         <lombok.version>1.18.34</lombok.version>
     </properties>
