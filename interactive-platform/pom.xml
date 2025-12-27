@@ -22,7 +22,7 @@
         <!-- Java 25 is now the default target version -->
         <java.version>25</java.version>
         <jwt.version>0.12.3</jwt.version>
-        <lombok.version>1.18.34</lombok.version>
+        <lombok.version>1.18.42</lombok.version>
     </properties>
     
     <dependencies>
