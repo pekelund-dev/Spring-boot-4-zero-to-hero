@@ -1,0 +1,4 @@
+{
+  "title": "Data Access with Spring Data JPA",
+  "summary": "Master database operations with Spring Data JPA, including entity modeling, repository patterns, custom queries, pagination, and database migrations."
+}

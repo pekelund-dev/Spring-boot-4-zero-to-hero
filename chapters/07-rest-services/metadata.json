@@ -1,0 +1,4 @@
+{
+  "title": "RESTful Web Services",
+  "summary": "Build production-ready REST APIs with Spring Boot, including request/response handling, exception management, HATEOAS, and API versioning strategies."
+}

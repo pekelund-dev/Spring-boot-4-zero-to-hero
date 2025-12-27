@@ -1,0 +1,4 @@
+{
+  "title": "Dependency Injection and IoC Container",
+  "summary": "Deep dive into Spring's dependency injection mechanisms, bean scopes, qualifiers, and configuration techniques for building loosely coupled applications."
+}

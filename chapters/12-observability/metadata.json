@@ -1,0 +1,4 @@
+{
+  "title": "Observability and Monitoring",
+  "summary": "Implement comprehensive observability with Spring Boot Actuator, Prometheus, Grafana, distributed tracing with Micrometer, and OpenTelemetry."
+}

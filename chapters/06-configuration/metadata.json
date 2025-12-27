@@ -1,0 +1,4 @@
+{
+  "title": "Spring Boot Configuration",
+  "summary": "Learn about application.properties, profile-specific configuration, @ConfigurationProperties, environment variables, and configuration best practices."
+}
