@@ -263,8 +263,8 @@
             <p>Interactive Learning Platform</p>
         </header>
 
-        <!-- Authentication Section -->
-        <div class="auth-section" id="authSection">
+        <!-- Authentication Section (hidden in demo mode) -->
+        <div class="auth-section" id="authSection" style="display: none;">
             <h2>Welcome to the Interactive Learning Platform!</h2>
             <p style="margin: 20px 0; color: #666;">Sign in with Google to start your Spring Boot journey and track your progress.</p>
             <button class="google-login-btn" onclick="loginWithGoogle()">
@@ -286,7 +286,7 @@
         </div>
 
         <!-- Setup Wizard -->
-        <div class="setup-wizard" id="setupWizard">
+        <div class="setup-wizard" id="setupWizard" style="display: block;">
             <h2>⚙️ Setup Your Learning Environment</h2>
             <p style="text-align: center; color: #666; margin-bottom: 30px;">
                 Tell us about your preferences so we can customize the course for you.
@@ -336,7 +336,12 @@
 
         <!-- Platform Content -->
         <div class="platform-content" id="platformContent">
-            <h2 style="margin-bottom: 30px; color: #333;">Your Learning Dashboard</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <h2 style="margin: 0; color: #333;">Your Learning Dashboard</h2>
+                <button class="btn" onclick="resetProgress()" style="background: #dc3545;">
+                    🔄 Reset Progress
+                </button>
+            </div>
 
             <div class="dashboard">
                 <div class="card">
@@ -566,6 +571,47 @@ public class HelloController {
             }
             if (demoProgress.quizScore >= 80) {
                 badgeDisplay.innerHTML += '<div class="badge">💯 Quiz Master</div>';
+            }
+        }
+
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all your progress?\n\nThis will:\n- Clear all chapter progress\n- Reset all badges\n- Clear quiz scores\n- Return you to the setup wizard')) {
+                // Reset progress
+                demoProgress = {
+                    completedChapters: 0,
+                    badges: 1,
+                    quizScore: 0,
+                    quizCount: 0
+                };
+                
+                // Reset quiz selection
+                selectedQuizAnswer = null;
+                document.querySelectorAll('.quiz-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Reset code input
+                document.getElementById('codeInput').value = `@RestController
+public class HelloController {
+    
+    // Add your code here
+    
+}`;
+                
+                // Hide feedback
+                document.getElementById('feedback').style.display = 'none';
+                
+                // Update dashboard
+                updateDashboard();
+                
+                // Reset badge display
+                document.getElementById('badgeDisplay').innerHTML = '<div class="badge">🌟 Beginner</div>';
+                
+                // Go back to setup wizard
+                document.getElementById('platformContent').style.display = 'none';
+                document.getElementById('setupWizard').style.display = 'block';
+                
+                alert('✅ Progress reset successfully!\n\nYou can now set up your learning environment again and start fresh.');
             }
         }
     </script>

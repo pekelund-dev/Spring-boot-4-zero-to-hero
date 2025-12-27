@@ -46,8 +46,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/error", "/h2-console/**", "/api/auth/**", "/oauth2/**", "/login/**", "/index.html", "/static/**", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
-                        .anyRequest().authenticated()
+                        // Allow all endpoints for demo/testing mode - authentication optional
+                        .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(oAuth2AuthenticationSuccessHandler)
