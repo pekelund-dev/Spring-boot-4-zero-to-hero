@@ -484,9 +484,54 @@
                     <p>Understand IoC, Dependency Injection, and Spring Boot's auto-configuration.</p>
                 </div>
 
-                <div class="chapter-item">
-                    <h4>Chapter 4-13: Advanced Topics</h4>
-                    <p>REST APIs, Data Access, Security, Testing, Microservices, and more...</p>
+                <div class="chapter-item" onclick="openChapter('04')">
+                    <h4>Chapter 4: Building REST APIs</h4>
+                    <p>Create RESTful web services with Spring Boot including CRUD operations, HTTP methods, and JSON handling.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('05')">
+                    <h4>Chapter 5: Data Access with Spring Data JPA</h4>
+                    <p>Learn database integration, JPA entities, repositories, and query methods.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('06')">
+                    <h4>Chapter 6: Security with Spring Security</h4>
+                    <p>Implement authentication, authorization, and secure your application.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('07')">
+                    <h4>Chapter 7: Testing Spring Boot Applications</h4>
+                    <p>Write unit tests, integration tests, and test your REST APIs.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('08')">
+                    <h4>Chapter 8: Error Handling and Validation</h4>
+                    <p>Handle exceptions gracefully and validate user input.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('09')">
+                    <h4>Chapter 9: Configuration and Profiles</h4>
+                    <p>Manage configurations for different environments using profiles.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('10')">
+                    <h4>Chapter 10: Actuator and Monitoring</h4>
+                    <p>Monitor your application health, metrics, and performance.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('11')">
+                    <h4>Chapter 11: Asynchronous Processing</h4>
+                    <p>Handle async operations, scheduling, and virtual threads.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('12')">
+                    <h4>Chapter 12: Microservices with Spring Boot</h4>
+                    <p>Build microservices architecture with service discovery and communication.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('13')">
+                    <h4>Chapter 13: Deployment and Best Practices</h4>
+                    <p>Deploy your application and learn production-ready best practices.</p>
                 </div>
             </div>
 
@@ -784,6 +829,646 @@ spring.datasource.password=<span class="string">secret</span>
 <span class="comment"># JPA configuration</span>
 spring.jpa.hibernate.ddl-auto=<span class="string">update</span>
 spring.jpa.show-sql=<span class="string">true</span>`
+                    }
+                ]
+            },
+            '04': {
+                title: 'Chapter 4: Building REST APIs',
+                sections: [
+                    {
+                        heading: 'What is REST?',
+                        content: `REST (Representational State Transfer) is an architectural style for designing networked applications. RESTful APIs use HTTP methods to perform CRUD operations on resources.`
+                    },
+                    {
+                        heading: 'Creating a REST Controller',
+                        content: `Use @RestController to create REST endpoints:`,
+                        code: `<span class="annotation">@RestController</span>
+<span class="annotation">@RequestMapping</span>(<span class="string">"/api/users"</span>)
+<span class="keyword">public class</span> UserController {
+    
+    <span class="keyword">private final</span> UserService userService;
+    
+    <span class="keyword">public</span> UserController(UserService userService) {
+        <span class="keyword">this</span>.userService = userService;
+    }
+    
+    <span class="comment">// GET all users</span>
+    <span class="annotation">@GetMapping</span>
+    <span class="keyword">public</span> List&lt;User&gt; getAllUsers() {
+        <span class="keyword">return</span> userService.findAll();
+    }
+    
+    <span class="comment">// GET user by ID</span>
+    <span class="annotation">@GetMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public</span> User getUserById(<span class="annotation">@PathVariable</span> Long id) {
+        <span class="keyword">return</span> userService.findById(id);
+    }
+    
+    <span class="comment">// POST create new user</span>
+    <span class="annotation">@PostMapping</span>
+    <span class="annotation">@ResponseStatus</span>(HttpStatus.CREATED)
+    <span class="keyword">public</span> User createUser(<span class="annotation">@RequestBody</span> User user) {
+        <span class="keyword">return</span> userService.create(user);
+    }
+    
+    <span class="comment">// PUT update user</span>
+    <span class="annotation">@PutMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public</span> User updateUser(<span class="annotation">@PathVariable</span> Long id, 
+                              <span class="annotation">@RequestBody</span> User user) {
+        <span class="keyword">return</span> userService.update(id, user);
+    }
+    
+    <span class="comment">// DELETE user</span>
+    <span class="annotation">@DeleteMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="annotation">@ResponseStatus</span>(HttpStatus.NO_CONTENT)
+    <span class="keyword">public void</span> deleteUser(<span class="annotation">@PathVariable</span> Long id) {
+        userService.delete(id);
+    }
+}`
+                    },
+                    {
+                        heading: 'HTTP Methods',
+                        content: `<ul>
+                            <li><strong>GET</strong> - Retrieve resources (read operation)</li>
+                            <li><strong>POST</strong> - Create new resources</li>
+                            <li><strong>PUT</strong> - Update existing resources</li>
+                            <li><strong>PATCH</strong> - Partially update resources</li>
+                            <li><strong>DELETE</strong> - Remove resources</li>
+                        </ul>`
+                    },
+                    {
+                        heading: 'Response Entity',
+                        content: `Control HTTP responses with ResponseEntity:`,
+                        code: `<span class="annotation">@GetMapping</span>(<span class="string">"/{id}"</span>)
+<span class="keyword">public</span> ResponseEntity&lt;User&gt; getUserById(<span class="annotation">@PathVariable</span> Long id) {
+    <span class="keyword">return</span> userService.findById(id)
+        .map(user <span class="keyword">-&gt;</span> ResponseEntity.ok(user))
+        .orElse(ResponseEntity.notFound().build());
+}`
+                    }
+                ]
+            },
+            '05': {
+                title: 'Chapter 5: Data Access with Spring Data JPA',
+                sections: [
+                    {
+                        heading: 'What is Spring Data JPA?',
+                        content: `Spring Data JPA simplifies database access by providing a repository abstraction. It automatically implements common database operations.`
+                    },
+                    {
+                        heading: 'Creating an Entity',
+                        content: `Define JPA entities using annotations:`,
+                        code: `<span class="annotation">@Entity</span>
+<span class="annotation">@Table</span>(name = <span class="string">"users"</span>)
+<span class="annotation">@Data</span>  <span class="comment">// Lombok: generates getters, setters, etc.</span>
+<span class="annotation">@NoArgsConstructor</span>
+<span class="annotation">@AllArgsConstructor</span>
+<span class="keyword">public class</span> User {
+    
+    <span class="annotation">@Id</span>
+    <span class="annotation">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)
+    <span class="keyword">private</span> Long id;
+    
+    <span class="annotation">@Column</span>(nullable = <span class="keyword">false</span>, unique = <span class="keyword">true</span>)
+    <span class="keyword">private</span> String email;
+    
+    <span class="annotation">@Column</span>(nullable = <span class="keyword">false</span>)
+    <span class="keyword">private</span> String name;
+    
+    <span class="annotation">@Column</span>(name = <span class="string">"created_at"</span>)
+    <span class="keyword">private</span> LocalDateTime createdAt;
+    
+    <span class="annotation">@PrePersist</span>
+    <span class="keyword">protected void</span> onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+}`
+                    },
+                    {
+                        heading: 'Creating a Repository',
+                        content: `Extend JpaRepository for CRUD operations:`,
+                        code: `<span class="annotation">@Repository</span>
+<span class="keyword">public interface</span> UserRepository <span class="keyword">extends</span> JpaRepository&lt;User, Long&gt; {
+    
+    <span class="comment">// Query methods are auto-implemented!</span>
+    Optional&lt;User&gt; findByEmail(String email);
+    
+    List&lt;User&gt; findByNameContaining(String keyword);
+    
+    <span class="annotation">@Query</span>(<span class="string">"SELECT u FROM User u WHERE u.createdAt > :date"</span>)
+    List&lt;User&gt; findRecentUsers(<span class="annotation">@Param</span>(<span class="string">"date"</span>) LocalDateTime date);
+    
+    <span class="keyword">boolean</span> existsByEmail(String email);
+}`
+                    },
+                    {
+                        heading: 'Database Configuration',
+                        content: `Configure your database in application.properties:`,
+                        code: `<span class="comment"># H2 Database (for development)</span>
+spring.datasource.url=<span class="string">jdbc:h2:mem:testdb</span>
+spring.h2.console.enabled=<span class="string">true</span>
+
+<span class="comment"># MySQL (for production)</span>
+spring.datasource.url=<span class="string">jdbc:mysql://localhost:3306/mydb</span>
+spring.datasource.username=<span class="string">root</span>
+spring.datasource.password=<span class="string">secret</span>
+spring.jpa.hibernate.ddl-auto=<span class="string">update</span>`
+                    }
+                ]
+            },
+            '06': {
+                title: 'Chapter 6: Security with Spring Security',
+                sections: [
+                    {
+                        heading: 'Spring Security Basics',
+                        content: `Spring Security provides authentication and authorization for your application. It protects endpoints and manages user sessions.`
+                    },
+                    {
+                        heading: 'Basic Security Configuration',
+                        content: `Configure security with SecurityFilterChain:`,
+                        code: `<span class="annotation">@Configuration</span>
+<span class="annotation">@EnableWebSecurity</span>
+<span class="keyword">public class</span> SecurityConfig {
+    
+    <span class="annotation">@Bean</span>
+    <span class="keyword">public</span> SecurityFilterChain securityFilterChain(HttpSecurity http) 
+            <span class="keyword">throws</span> Exception {
+        http
+            .authorizeHttpRequests(auth <span class="keyword">-&gt;</span> auth
+                .requestMatchers(<span class="string">"/api/public/**"</span>).permitAll()
+                .requestMatchers(<span class="string">"/api/admin/**"</span>).hasRole(<span class="string">"ADMIN"</span>)
+                .anyRequest().authenticated()
+            )
+            .formLogin(form <span class="keyword">-&gt;</span> form
+                .loginPage(<span class="string">"/login"</span>)
+                .permitAll()
+            )
+            .logout(logout <span class="keyword">-&gt;</span> logout.permitAll());
+        
+        <span class="keyword">return</span> http.build();
+    }
+}`
+                    },
+                    {
+                        heading: 'User Details Service',
+                        content: `Implement custom user authentication:`,
+                        code: `<span class="annotation">@Service</span>
+<span class="keyword">public class</span> CustomUserDetailsService 
+        <span class="keyword">implements</span> UserDetailsService {
+    
+    <span class="keyword">private final</span> UserRepository userRepository;
+    
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> UserDetails loadUserByUsername(String email) 
+            <span class="keyword">throws</span> UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() <span class="keyword">-&gt; new</span> UsernameNotFoundException(
+                <span class="string">"User not found: "</span> + email));
+        
+        <span class="keyword">return</span> org.springframework.security.core.userdetails.User
+            .withUsername(user.getEmail())
+            .password(user.getPassword())
+            .roles(user.getRole())
+            .build();
+    }
+}`
+                    },
+                    {
+                        heading: 'JWT Authentication',
+                        content: `Implement JWT tokens for stateless authentication. JWT (JSON Web Token) allows secure transmission of information between client and server.`
+                    }
+                ]
+            },
+            '07': {
+                title: 'Chapter 7: Testing Spring Boot Applications',
+                sections: [
+                    {
+                        heading: 'Testing Strategy',
+                        content: `A good testing strategy includes:
+                        <ul>
+                            <li><strong>Unit Tests</strong> - Test individual components in isolation</li>
+                            <li><strong>Integration Tests</strong> - Test component interactions</li>
+                            <li><strong>End-to-End Tests</strong> - Test complete user flows</li>
+                        </ul>`
+                    },
+                    {
+                        heading: 'Unit Testing Services',
+                        content: `Test business logic with JUnit and Mockito:`,
+                        code: `<span class="annotation">@ExtendWith</span>(MockitoExtension.<span class="keyword">class</span>)
+<span class="keyword">class</span> UserServiceTest {
+    
+    <span class="annotation">@Mock</span>
+    <span class="keyword">private</span> UserRepository userRepository;
+    
+    <span class="annotation">@InjectMocks</span>
+    <span class="keyword">private</span> UserService userService;
+    
+    <span class="annotation">@Test</span>
+    <span class="keyword">void</span> testFindById() {
+        <span class="comment">// Given</span>
+        User user = <span class="keyword">new</span> User(<span class="string">"test@example.com"</span>, <span class="string">"Test User"</span>);
+        when(userRepository.findById(1L))
+            .thenReturn(Optional.of(user));
+        
+        <span class="comment">// When</span>
+        User result = userService.findById(1L);
+        
+        <span class="comment">// Then</span>
+        assertNotNull(result);
+        assertEquals(<span class="string">"test@example.com"</span>, result.getEmail());
+        verify(userRepository).findById(1L);
+    }
+}`
+                    },
+                    {
+                        heading: 'Testing REST Controllers',
+                        content: `Test your APIs with MockMvc:`,
+                        code: `<span class="annotation">@WebMvcTest</span>(UserController.<span class="keyword">class</span>)
+<span class="keyword">class</span> UserControllerTest {
+    
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> MockMvc mockMvc;
+    
+    <span class="annotation">@MockBean</span>
+    <span class="keyword">private</span> UserService userService;
+    
+    <span class="annotation">@Test</span>
+    <span class="keyword">void</span> testGetUser() <span class="keyword">throws</span> Exception {
+        User user = <span class="keyword">new</span> User(<span class="string">"test@test.com"</span>, <span class="string">"Test"</span>);
+        when(userService.findById(1L)).thenReturn(user);
+        
+        mockMvc.perform(get(<span class="string">"/api/users/1"</span>))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath(<span class="string">"$.email"</span>)
+                .value(<span class="string">"test@test.com"</span>));
+    }
+}`
+                    },
+                    {
+                        heading: 'Integration Tests',
+                        content: `Test with real database using @SpringBootTest:`,
+                        code: `<span class="annotation">@SpringBootTest</span>
+<span class="annotation">@AutoConfigureTestDatabase</span>
+<span class="keyword">class</span> UserIntegrationTest {
+    
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> UserRepository userRepository;
+    
+    <span class="annotation">@Test</span>
+    <span class="keyword">void</span> testSaveAndFind() {
+        User user = <span class="keyword">new</span> User(<span class="string">"test@test.com"</span>, <span class="string">"Test"</span>);
+        User saved = userRepository.save(user);
+        
+        Optional&lt;User&gt; found = userRepository.findById(saved.getId());
+        assertTrue(found.isPresent());
+        assertEquals(<span class="string">"test@test.com"</span>, found.get().getEmail());
+    }
+}`
+                    }
+                ]
+            },
+            '08': {
+                title: 'Chapter 8: Error Handling and Validation',
+                sections: [
+                    {
+                        heading: 'Global Exception Handler',
+                        content: `Handle exceptions globally with @ControllerAdvice:`,
+                        code: `<span class="annotation">@RestControllerAdvice</span>
+<span class="keyword">public class</span> GlobalExceptionHandler {
+    
+    <span class="annotation">@ExceptionHandler</span>(ResourceNotFoundException.<span class="keyword">class</span>)
+    <span class="annotation">@ResponseStatus</span>(HttpStatus.NOT_FOUND)
+    <span class="keyword">public</span> ErrorResponse handleNotFound(
+            ResourceNotFoundException ex) {
+        <span class="keyword">return new</span> ErrorResponse(
+            HttpStatus.NOT_FOUND.value(),
+            ex.getMessage(),
+            LocalDateTime.now()
+        );
+    }
+    
+    <span class="annotation">@ExceptionHandler</span>(MethodArgumentNotValidException.<span class="keyword">class</span>)
+    <span class="annotation">@ResponseStatus</span>(HttpStatus.BAD_REQUEST)
+    <span class="keyword">public</span> ValidationErrorResponse handleValidation(
+            MethodArgumentNotValidException ex) {
+        Map&lt;String, String&gt; errors = <span class="keyword">new</span> HashMap&lt;&gt;();
+        ex.getBindingResult().getFieldErrors()
+            .forEach(error <span class="keyword">-&gt;</span> 
+                errors.put(error.getField(), 
+                          error.getDefaultMessage()));
+        <span class="keyword">return new</span> ValidationErrorResponse(errors);
+    }
+}`
+                    },
+                    {
+                        heading: 'Input Validation',
+                        content: `Validate request data with Bean Validation:`,
+                        code: `<span class="annotation">@Data</span>
+<span class="keyword">public class</span> CreateUserRequest {
+    
+    <span class="annotation">@NotBlank</span>(message = <span class="string">"Email is required"</span>)
+    <span class="annotation">@Email</span>(message = <span class="string">"Invalid email format"</span>)
+    <span class="keyword">private</span> String email;
+    
+    <span class="annotation">@NotBlank</span>(message = <span class="string">"Name is required"</span>)
+    <span class="annotation">@Size</span>(min = 2, max = 50, 
+          message = <span class="string">"Name must be 2-50 characters"</span>)
+    <span class="keyword">private</span> String name;
+    
+    <span class="annotation">@NotNull</span>
+    <span class="annotation">@Min</span>(value = 18, message = <span class="string">"Must be 18 or older"</span>)
+    <span class="keyword">private</span> Integer age;
+}
+
+<span class="comment">// In controller:</span>
+<span class="annotation">@PostMapping</span>
+<span class="keyword">public</span> User createUser(
+        <span class="annotation">@Valid</span> <span class="annotation">@RequestBody</span> CreateUserRequest request) {
+    <span class="keyword">return</span> userService.create(request);
+}`
+                    },
+                    {
+                        heading: 'Custom Validators',
+                        content: `Create custom validation annotations for complex rules.`
+                    }
+                ]
+            },
+            '09': {
+                title: 'Chapter 9: Configuration and Profiles',
+                sections: [
+                    {
+                        heading: 'Application Profiles',
+                        content: `Use profiles to manage different environments (dev, test, prod):`,
+                        code: `<span class="comment"># application.properties (common)</span>
+spring.application.name=<span class="string">my-app</span>
+
+<span class="comment"># application-dev.properties (development)</span>
+spring.datasource.url=<span class="string">jdbc:h2:mem:devdb</span>
+logging.level.root=<span class="string">DEBUG</span>
+
+<span class="comment"># application-prod.properties (production)</span>
+spring.datasource.url=<span class="string">jdbc:mysql://prod-db:3306/mydb</span>
+logging.level.root=<span class="string">INFO</span>
+
+<span class="comment"># Activate profile</span>
+spring.profiles.active=<span class="string">dev</span>`
+                    },
+                    {
+                        heading: 'Configuration Properties',
+                        content: `Externalize configuration with type-safe properties:`,
+                        code: `<span class="annotation">@Configuration</span>
+<span class="annotation">@ConfigurationProperties</span>(prefix = <span class="string">"app"</span>)
+<span class="annotation">@Data</span>
+<span class="keyword">public class</span> AppProperties {
+    
+    <span class="keyword">private</span> String name;
+    <span class="keyword">private</span> String version;
+    <span class="keyword">private</span> Security security = <span class="keyword">new</span> Security();
+    
+    <span class="annotation">@Data</span>
+    <span class="keyword">public static class</span> Security {
+        <span class="keyword">private</span> String jwtSecret;
+        <span class="keyword">private</span> <span class="keyword">long</span> jwtExpiration = 86400000;
+    }
+}
+
+<span class="comment"># In application.properties:</span>
+app.name=<span class="string">My Application</span>
+app.version=<span class="string">1.0.0</span>
+app.security.jwt-secret=<span class="string">my-secret-key</span>`
+                    },
+                    {
+                        heading: 'Environment Variables',
+                        content: `Override properties with environment variables for sensitive data like passwords and API keys.`
+                    }
+                ]
+            },
+            '10': {
+                title: 'Chapter 10: Actuator and Monitoring',
+                sections: [
+                    {
+                        heading: 'Spring Boot Actuator',
+                        content: `Actuator provides production-ready features for monitoring:`,
+                        code: `<span class="comment">&lt;!-- Add dependency --&gt;</span>
+&lt;<span class="keyword">dependency</span>&gt;
+    &lt;<span class="keyword">groupId</span>&gt;org.springframework.boot&lt;/<span class="keyword">groupId</span>&gt;
+    &lt;<span class="keyword">artifactId</span>&gt;spring-boot-starter-actuator&lt;/<span class="keyword">artifactId</span>&gt;
+&lt;/<span class="keyword">dependency</span>&gt;
+
+<span class="comment"># Enable endpoints</span>
+management.endpoints.web.exposure.include=<span class="string">health,info,metrics,env</span>
+management.endpoint.health.show-details=<span class="string">always</span>`
+                    },
+                    {
+                        heading: 'Health Checks',
+                        content: `Monitor application health:
+                        <ul>
+                            <li><code>/actuator/health</code> - Overall health status</li>
+                            <li><code>/actuator/info</code> - Application information</li>
+                            <li><code>/actuator/metrics</code> - Application metrics</li>
+                            <li><code>/actuator/env</code> - Environment properties</li>
+                        </ul>`
+                    },
+                    {
+                        heading: 'Custom Health Indicator',
+                        content: `Create custom health checks:`,
+                        code: `<span class="annotation">@Component</span>
+<span class="keyword">public class</span> DatabaseHealthIndicator 
+        <span class="keyword">implements</span> HealthIndicator {
+    
+    <span class="keyword">private final</span> DataSource dataSource;
+    
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> Health health() {
+        <span class="keyword">try</span> (Connection conn = dataSource.getConnection()) {
+            <span class="keyword">return</span> Health.up()
+                .withDetail(<span class="string">"database"</span>, <span class="string">"Available"</span>)
+                .build();
+        } <span class="keyword">catch</span> (Exception e) {
+            <span class="keyword">return</span> Health.down()
+                .withDetail(<span class="string">"error"</span>, e.getMessage())
+                .build();
+        }
+    }
+}`
+                    },
+                    {
+                        heading: 'Prometheus & Grafana',
+                        content: `Integrate with Prometheus for metrics collection and Grafana for visualization.`
+                    }
+                ]
+            },
+            '11': {
+                title: 'Chapter 11: Asynchronous Processing',
+                sections: [
+                    {
+                        heading: 'Async Methods',
+                        content: `Execute methods asynchronously:`,
+                        code: `<span class="annotation">@Configuration</span>
+<span class="annotation">@EnableAsync</span>
+<span class="keyword">public class</span> AsyncConfig {
+    
+    <span class="annotation">@Bean</span>
+    <span class="keyword">public</span> Executor taskExecutor() {
+        ThreadPoolTaskExecutor executor = 
+            <span class="keyword">new</span> ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(2);
+        executor.setMaxPoolSize(5);
+        executor.setQueueCapacity(100);
+        executor.setThreadNamePrefix(<span class="string">"async-"</span>);
+        executor.initialize();
+        <span class="keyword">return</span> executor;
+    }
+}
+
+<span class="annotation">@Service</span>
+<span class="keyword">public class</span> EmailService {
+    
+    <span class="annotation">@Async</span>
+    <span class="keyword">public</span> CompletableFuture&lt;Void&gt; sendEmail(String to, String msg) {
+        <span class="comment">// Send email asynchronously</span>
+        emailClient.send(to, msg);
+        <span class="keyword">return</span> CompletableFuture.completedFuture(<span class="keyword">null</span>);
+    }
+}`
+                    },
+                    {
+                        heading: 'Scheduled Tasks',
+                        content: `Schedule recurring tasks:`,
+                        code: `<span class="annotation">@Component</span>
+<span class="annotation">@EnableScheduling</span>
+<span class="keyword">public class</span> ScheduledTasks {
+    
+    <span class="comment">// Run every 5 minutes</span>
+    <span class="annotation">@Scheduled</span>(fixedRate = 300000)
+    <span class="keyword">public void</span> cleanupOldData() {
+        <span class="comment">// Cleanup logic</span>
+    }
+    
+    <span class="comment">// Run every day at 2 AM</span>
+    <span class="annotation">@Scheduled</span>(cron = <span class="string">"0 0 2 * * ?"</span>)
+    <span class="keyword">public void</span> generateDailyReport() {
+        <span class="comment">// Report generation</span>
+    }
+}`
+                    },
+                    {
+                        heading: 'Virtual Threads (Java 21+)',
+                        content: `Java ${userPreferences.javaVersion} supports virtual threads for lightweight concurrency. Virtual threads enable high scalability with simple code.`
+                    }
+                ]
+            },
+            '12': {
+                title: 'Chapter 12: Microservices with Spring Boot',
+                sections: [
+                    {
+                        heading: 'Microservices Architecture',
+                        content: `Microservices break applications into small, independent services that communicate over HTTP or messaging.
+                        <ul>
+                            <li><strong>Service Discovery</strong> - Eureka, Consul</li>
+                            <li><strong>API Gateway</strong> - Spring Cloud Gateway</li>
+                            <li><strong>Load Balancing</strong> - Client-side with Ribbon</li>
+                            <li><strong>Circuit Breaker</strong> - Resilience4j</li>
+                        </ul>`
+                    },
+                    {
+                        heading: 'Service Communication',
+                        content: `Call other services with RestClient (Spring Boot 4.x):`,
+                        code: `<span class="annotation">@Service</span>
+<span class="keyword">public class</span> OrderService {
+    
+    <span class="keyword">private final</span> RestClient restClient;
+    
+    <span class="keyword">public</span> OrderService(RestClient.Builder builder) {
+        <span class="keyword">this</span>.restClient = builder
+            .baseUrl(<span class="string">"http://user-service"</span>)
+            .build();
+    }
+    
+    <span class="keyword">public</span> User getUserInfo(Long userId) {
+        <span class="keyword">return</span> restClient.get()
+            .uri(<span class="string">"/api/users/{id}"</span>, userId)
+            .retrieve()
+            .body(User.<span class="keyword">class</span>);
+    }
+}`
+                    },
+                    {
+                        heading: 'Circuit Breaker',
+                        content: `Implement fault tolerance:`,
+                        code: `<span class="annotation">@Service</span>
+<span class="keyword">public class</span> ResilientService {
+    
+    <span class="annotation">@CircuitBreaker</span>(name = <span class="string">"userService"</span>, 
+                    fallbackMethod = <span class="string">"getUserFallback"</span>)
+    <span class="keyword">public</span> User getUser(Long id) {
+        <span class="keyword">return</span> restClient.get()
+            .uri(<span class="string">"/users/{id}"</span>, id)
+            .retrieve()
+            .body(User.<span class="keyword">class</span>);
+    }
+    
+    <span class="keyword">private</span> User getUserFallback(Long id, Exception e) {
+        <span class="keyword">return new</span> User(id, <span class="string">"Unknown"</span>, <span class="string">"N/A"</span>);
+    }
+}`
+                    }
+                ]
+            },
+            '13': {
+                title: 'Chapter 13: Deployment and Best Practices',
+                sections: [
+                    {
+                        heading: 'Building for Production',
+                        content: `Build your application with ${userPreferences.buildTool}:`,
+                        code: userPreferences.buildTool === 'MAVEN' ?
+`<span class="comment"># Build JAR file</span>
+mvn clean package -DskipTests
+
+<span class="comment"># Run the JAR</span>
+java -jar target/myapp.jar
+
+<span class="comment"># With custom profile</span>
+java -jar target/myapp.jar --spring.profiles.active=prod` :
+`<span class="comment"># Build JAR file</span>
+./gradlew build
+
+<span class="comment"># Run the JAR</span>
+java -jar build/libs/myapp.jar
+
+<span class="comment"># With custom profile</span>
+java -jar build/libs/myapp.jar --spring.profiles.active=prod`
+                    },
+                    {
+                        heading: 'Docker Deployment',
+                        content: `Containerize your application:`,
+                        code: `<span class="comment"># Dockerfile</span>
+<span class="keyword">FROM</span> openjdk:25-slim
+<span class="keyword">WORKDIR</span> /app
+<span class="keyword">COPY</span> target/*.jar app.jar
+<span class="keyword">EXPOSE</span> 8080
+<span class="keyword">ENTRYPOINT</span> [<span class="string">"java"</span>, <span class="string">"-jar"</span>, <span class="string">"app.jar"</span>]
+
+<span class="comment"># Build and run</span>
+docker build -t myapp .
+docker run -p 8080:8080 myapp`
+                    },
+                    {
+                        heading: 'Best Practices',
+                        content: `<ul>
+                            <li><strong>Externalize Configuration</strong> - Use environment variables</li>
+                            <li><strong>Logging</strong> - Implement proper logging with SLF4J</li>
+                            <li><strong>Error Handling</strong> - Global exception handlers</li>
+                            <li><strong>Security</strong> - Never commit secrets, use OAuth/JWT</li>
+                            <li><strong>Testing</strong> - Maintain high test coverage</li>
+                            <li><strong>Monitoring</strong> - Use Actuator and APM tools</li>
+                            <li><strong>Documentation</strong> - Use Swagger/OpenAPI</li>
+                            <li><strong>CI/CD</strong> - Automate builds and deployments</li>
+                        </ul>`
+                    },
+                    {
+                        heading: 'Congratulations!',
+                        content: `You've completed the Spring Boot 4.x course! You now have the knowledge to build production-ready applications with Java ${userPreferences.javaVersion}, ${userPreferences.buildTool}, and Spring Boot 4.0.1. Keep practicing and exploring!`
                     }
                 ]
             }
