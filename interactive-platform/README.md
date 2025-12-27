@@ -54,7 +54,9 @@ An interactive web-based learning platform for the Spring Boot 4 course, featuri
 ## Technology Stack
 
 ### Backend
-- **Spring Boot 3.2.1** (preparing for 4.x)
+- **Spring Boot 3.4.1** (latest stable version with Java 25 support)
+  - Note: Spring Boot 4.0 is currently in development and not yet released
+  - This version provides the most recent features and best Java 25 compatibility
 - **Spring Security** with OAuth2
 - **Spring Data JPA** for persistence
 - **H2 Database** (development) / PostgreSQL (production)
@@ -74,25 +76,88 @@ An interactive web-based learning platform for the Spring Boot 4 course, featuri
 - Maven 3.9+ (for Java 25 support)
 - Google OAuth2 credentials (for authentication)
 
-### Important: Java 25 Requirements
+### Important: Java 25 Configuration &amp; Troubleshooting
+
+**Spring Boot Version:** This project uses **Spring Boot 3.4.1**, the latest stable version with best Java 25 compatibility.
+- **Note:** Spring Boot 4.0 is currently in development and not yet officially released.
 
 **For Java 25 (default):**
-1. Ensure you have JDK 25 installed and configured as your JAVA_HOME:
+1. Ensure you have JDK 25 installed (full JDK, not just JRE):
 ```bash
-java -version  # Should show Java 25
-echo $JAVA_HOME  # Should point to JDK 25
+java -version  # Should show "openjdk version \"25\"" or similar
+echo $JAVA_HOME  # Should point to JDK 25 installation directory
 ```
 
-2. Ensure you have Maven 3.9 or higher:
+2. Ensure you have Maven 3.9.9 or higher:
 ```bash
-mvn -version  # Should show Maven 3.9+
+mvn -version  # Should show Maven 3.9.9+
+# Maven must also report "Java version: 25"
 ```
 
-**If you encounter "release version 25 not supported" error:**
-- Verify JDK 25 is installed: `java -version`
-- Verify JAVA_HOME points to JDK 25: `echo $JAVA_HOME`
-- Update Maven to 3.9+: [Download Maven](https://maven.apache.org/download.cgi)
-- Clear Maven cache: `mvn clean`
+3. Verify your JDK supports the release flag:
+```bash
+javac --release 25 --version
+# Should succeed without errors
+```
+
+**If you encounter "error: release version 25 not supported":**
+
+This error usually means one of the following:
+1. **JAVA_HOME is not set to JDK 25** - Maven is using a different Java version
+2. **Maven's Java is different from command line Java** - Check `mvn -version`
+3. **JDK 25 installation is incomplete** - Reinstall JDK 25
+4. **Compiler doesn't recognize release 25** - Your javac version may not support it yet
+
+**Solutions:**
+
+**Option 1: Fix Java 25 Setup (Recommended)**
+```bash
+# On Linux/Mac - set JAVA_HOME
+export JAVA_HOME=/path/to/jdk-25
+export PATH=$JAVA_HOME/bin:$PATH
+
+# On Windows
+set JAVA_HOME=C:\path\to\jdk-25
+set PATH=%JAVA_HOME%\bin;%PATH%
+
+# Verify
+mvn -version  # Should show Java version: 25
+javac --release 25 --version  # Should work
+
+# Clean and rebuild
+cd interactive-platform
+mvn clean compile
+```
+
+**Option 2: Use Java 21 LTS (Temporary Workaround)**
+If Java 25 setup continues to fail, use Java 21 (Long Term Support version):
+
+1. Update `pom.xml`:
+```xml
+<properties>
+    <java.version>21</java.version>  <!-- Changed from 25 to 21 -->
+    ...
+</properties>
+```
+
+2. Ensure JDK 21 is installed:
+```bash
+# Download from: https://adoptium.net/temurin/releases/?version=21
+java -version  # Should show version 21
+```
+
+3. Rebuild:
+```bash
+mvn clean compile
+```
+
+**Option 3: Use Java 17 (Maximum Compatibility)**
+```xml
+<properties>
+    <java.version>17</java.version>
+    ...
+</properties>
+```
 
 ### Java Version Configuration
 
