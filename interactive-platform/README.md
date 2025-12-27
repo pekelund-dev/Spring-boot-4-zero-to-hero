@@ -54,9 +54,7 @@ An interactive web-based learning platform for the Spring Boot 4 course, featuri
 ## Technology Stack
 
 ### Backend
-- **Spring Boot 3.4.1** (latest stable version with Java 25 support)
-  - Note: Spring Boot 4.0 is currently in development and not yet released
-  - This version provides the most recent features and best Java 25 compatibility
+- **Spring Boot 4.0.1** (latest GA release with Java 25 support)
 - **Spring Security** with OAuth2
 - **Spring Data JPA** for persistence
 - **H2 Database** (development) / PostgreSQL (production)
@@ -78,8 +76,7 @@ An interactive web-based learning platform for the Spring Boot 4 course, featuri
 
 ### Important: Java 25 Configuration &amp; Troubleshooting
 
-**Spring Boot Version:** This project uses **Spring Boot 3.4.1**, the latest stable version with best Java 25 compatibility.
-- **Note:** Spring Boot 4.0 is currently in development and not yet officially released.
+**Spring Boot Version:** This project uses **Spring Boot 4.0.1**, the latest GA release with full Java 25 support.
 
 **For Java 25 (default):**
 1. Ensure you have JDK 25 installed (full JDK, not just JRE):
