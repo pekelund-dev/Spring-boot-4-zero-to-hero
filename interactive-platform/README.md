@@ -70,20 +70,35 @@ An interactive web-based learning platform for the Spring Boot 4 course, featuri
 ## Getting Started
 
 ### Prerequisites
-- Java 25 (default) or Java 17/21
-- Maven 3.6+
+- **Java 25** (required for default configuration)
+- Maven 3.9+ (for Java 25 support)
 - Google OAuth2 credentials (for authentication)
+
+### Important: Java 25 Requirements
+
+**For Java 25 (default):**
+1. Ensure you have JDK 25 installed and configured as your JAVA_HOME:
+```bash
+java -version  # Should show Java 25
+echo $JAVA_HOME  # Should point to JDK 25
+```
+
+2. Ensure you have Maven 3.9 or higher:
+```bash
+mvn -version  # Should show Maven 3.9+
+```
+
+**If you encounter "release version 25 not supported" error:**
+- Verify JDK 25 is installed: `java -version`
+- Verify JAVA_HOME points to JDK 25: `echo $JAVA_HOME`
+- Update Maven to 3.9+: [Download Maven](https://maven.apache.org/download.cgi)
+- Clear Maven cache: `mvn clean`
 
 ### Java Version Configuration
 
-The project is configured with **Java 25 as the default**. To use a different Java version:
+The project is configured with **Java 25 as the default**. To use an older Java version:
 
-1. Ensure you have your desired JDK installed:
-```bash
-java -version
-```
-
-2. Update `pom.xml` to use your Java version:
+1. Update `pom.xml` to use your Java version:
 ```xml
 <properties>
     <java.version>17</java.version>  <!-- or 21 for LTS -->
@@ -91,7 +106,10 @@ java -version
 </properties>
 ```
 
-3. The platform will automatically adapt examples and instructions based on the Java version selected in the user preferences wizard.
+2. Rebuild:
+```bash
+mvn clean compile
+```
 
 ### Installation
 
