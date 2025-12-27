@@ -590,7 +590,10 @@ public class HelloController {
                 chapters.forEach(chapter => {
                     const chapterDiv = document.createElement('div');
                     chapterDiv.className = 'chapter-item';
-                    chapterDiv.onclick = () => openChapter(chapter.chapterId.split('-')[0]);
+                    // Extract chapter number more safely, fallback to chapterId if pattern doesn't match
+                    const chapterMatch = chapter.chapterId.match(/^(\d+)-/);
+                    const chapterNum = chapterMatch ? chapterMatch[1] : chapter.chapterId;
+                    chapterDiv.onclick = () => openChapter(chapterNum);
                     
                     chapterDiv.innerHTML = `
                         <h4>${chapter.title}</h4>

@@ -160,6 +160,7 @@ public class ChapterService {
             String name = matcher.group(2);
             // Convert kebab-case to Title Case
             return Stream.of(name.split("-"))
+                    .filter(word -> !word.isEmpty()) // Filter out empty strings
                     .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
                     .reduce((a, b) -> a + " " + b)
                     .orElse(name);
