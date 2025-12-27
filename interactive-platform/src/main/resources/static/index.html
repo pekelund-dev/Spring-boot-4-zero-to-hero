@@ -254,6 +254,97 @@
             color: white;
             border-color: #667eea;
         }
+
+        .chapter-content {
+            padding: 40px;
+            display: none;
+        }
+
+        .chapter-content.active {
+            display: block;
+        }
+
+        .chapter-header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        .chapter-header h2 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .chapter-section {
+            margin: 30px 0;
+        }
+
+        .chapter-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .chapter-section p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .chapter-section ul {
+            margin-left: 20px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .chapter-section ul li {
+            margin: 10px 0;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .code-block .comment {
+            color: #6a9955;
+        }
+
+        .code-block .keyword {
+            color: #569cd6;
+        }
+
+        .code-block .string {
+            color: #ce9178;
+        }
+
+        .code-block .annotation {
+            color: #dcdcaa;
+        }
+
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: background 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+        }
     </style>
 </head>
 <body>
@@ -443,6 +534,14 @@ public class HelloController {
                 </div>
             </div>
         </div>
+
+        <!-- Chapter Content View -->
+        <div class="chapter-content" id="chapterContent">
+            <button class="back-btn" onclick="closeChapter()">← Back to Dashboard</button>
+            <div id="chapterContentBody">
+                <!-- Chapter content will be dynamically loaded here -->
+            </div>
+        </div>
     </div>
 
     <script>
@@ -487,12 +586,251 @@ public class HelloController {
             document.getElementById('userIDE').textContent = userPreferences.ide.replace('_', ' ');
         }
 
+        const chapterData = {
+            '01': {
+                title: 'Chapter 1: Introduction to Spring Boot 4.x',
+                sections: [
+                    {
+                        heading: 'What is Spring Boot 4.x?',
+                        content: `Spring Boot 4.x is the latest major release of the Spring Boot framework, designed to simplify the development of production-ready Spring applications. It builds upon the solid foundation of previous versions while introducing modern features and improvements.`
+                    },
+                    {
+                        heading: 'Key Features',
+                        content: `Spring Boot 4.x introduces several groundbreaking features:
+                        <ul>
+                            <li><strong>Enhanced Java 25 Support</strong> - Full compatibility with the latest Java features including pattern matching, records, and virtual threads</li>
+                            <li><strong>Improved Startup Performance</strong> - Faster application startup times with optimized auto-configuration</li>
+                            <li><strong>Native Image Support</strong> - Better GraalVM native image compilation for faster startup and lower memory footprint</li>
+                            <li><strong>Enhanced Observability</strong> - Built-in support for modern observability tools and metrics</li>
+                            <li><strong>Simplified Configuration</strong> - Even easier configuration with smart defaults and improved property management</li>
+                        </ul>`
+                    },
+                    {
+                        heading: 'Your First Spring Boot Application',
+                        content: `Let's look at a simple Spring Boot 4.x application:`,
+                        code: `<span class="annotation">@SpringBootApplication</span>
+<span class="keyword">public class</span> MyApplication {
+    
+    <span class="keyword">public static void</span> main(String[] args) {
+        SpringApplication.run(MyApplication.<span class="keyword">class</span>, args);
+    }
+}
+
+<span class="annotation">@RestController</span>
+<span class="keyword">class</span> HelloController {
+    
+    <span class="annotation">@GetMapping</span>(<span class="string">"/hello"</span>)
+    <span class="keyword">public</span> String hello() {
+        <span class="keyword">return</span> <span class="string">"Hello, Spring Boot 4!"</span>;
+    }
+}`
+                    },
+                    {
+                        heading: 'Why Choose Spring Boot 4.x?',
+                        content: `<ul>
+                            <li><strong>Productivity</strong> - Write less boilerplate code, focus on business logic</li>
+                            <li><strong>Modern Java</strong> - Leverage the latest Java features seamlessly</li>
+                            <li><strong>Production-Ready</strong> - Built-in monitoring, health checks, and metrics</li>
+                            <li><strong>Ecosystem</strong> - Vast ecosystem of libraries and integrations</li>
+                            <li><strong>Community</strong> - Large, active community and excellent documentation</li>
+                        </ul>`
+                    }
+                ]
+            },
+            '02': {
+                title: 'Chapter 2: Setting Up Your Development Environment',
+                sections: [
+                    {
+                        heading: 'Installing Java 25',
+                        content: `To develop with Spring Boot 4.x, you'll need Java 25 installed on your system. Based on your preferences, you're using <strong>${userPreferences.os.replace('_', ' ')}</strong>.`
+                    },
+                    {
+                        heading: 'Choosing Your IDE',
+                        content: `You've selected <strong>${userPreferences.ide.replace('_', ' ')}</strong> as your IDE. This is an excellent choice for Spring Boot development! Here's how to optimize it:`
+                    },
+                    {
+                        heading: 'Setting Up Your Build Tool',
+                        content: `You're using <strong>${userPreferences.buildTool}</strong>. Here's a sample configuration:`,
+                        code: userPreferences.buildTool === 'MAVEN' ? 
+`<span class="comment">&lt;!-- pom.xml --&gt;</span>
+&lt;<span class="keyword">project</span>&gt;
+    &lt;<span class="keyword">parent</span>&gt;
+        &lt;<span class="keyword">groupId</span>&gt;org.springframework.boot&lt;/<span class="keyword">groupId</span>&gt;
+        &lt;<span class="keyword">artifactId</span>&gt;spring-boot-starter-parent&lt;/<span class="keyword">artifactId</span>&gt;
+        &lt;<span class="keyword">version</span>&gt;<span class="string">4.0.1</span>&lt;/<span class="keyword">version</span>&gt;
+    &lt;/<span class="keyword">parent</span>&gt;
+    
+    &lt;<span class="keyword">properties</span>&gt;
+        &lt;<span class="keyword">java.version</span>&gt;<span class="string">${userPreferences.javaVersion}</span>&lt;/<span class="keyword">java.version</span>&gt;
+        &lt;<span class="keyword">lombok.version</span>&gt;<span class="string">1.18.42</span>&lt;/<span class="keyword">lombok.version</span>&gt;
+    &lt;/<span class="keyword">properties</span>&gt;
+    
+    &lt;<span class="keyword">dependencies</span>&gt;
+        &lt;<span class="keyword">dependency</span>&gt;
+            &lt;<span class="keyword">groupId</span>&gt;org.springframework.boot&lt;/<span class="keyword">groupId</span>&gt;
+            &lt;<span class="keyword">artifactId</span>&gt;spring-boot-starter-web&lt;/<span class="keyword">artifactId</span>&gt;
+        &lt;/<span class="keyword">dependency</span>&gt;
+        &lt;<span class="keyword">dependency</span>&gt;
+            &lt;<span class="keyword">groupId</span>&gt;org.projectlombok&lt;/<span class="keyword">groupId</span>&gt;
+            &lt;<span class="keyword">artifactId</span>&gt;lombok&lt;/<span class="keyword">artifactId</span>&gt;
+        &lt;/<span class="keyword">dependency</span>&gt;
+    &lt;/<span class="keyword">dependencies</span>&gt;
+&lt;/<span class="keyword">project</span>&gt;` :
+`<span class="comment">// build.gradle</span>
+plugins {
+    id <span class="string">'org.springframework.boot'</span> version <span class="string">'4.0.1'</span>
+    id <span class="string">'io.spring.dependency-management'</span> version <span class="string">'1.1.0'</span>
+    id <span class="string">'java'</span>
+}
+
+sourceCompatibility = <span class="string">'${userPreferences.javaVersion}'</span>
+
+dependencies {
+    implementation <span class="string">'org.springframework.boot:spring-boot-starter-web'</span>
+    compileOnly <span class="string">'org.projectlombok:lombok:1.18.42'</span>
+    annotationProcessor <span class="string">'org.projectlombok:lombok:1.18.42'</span>
+}`
+                    },
+                    {
+                        heading: 'Installing Lombok Plugin',
+                        content: `Lombok helps reduce boilerplate code. Install the Lombok plugin for ${userPreferences.ide.replace('_', ' ')}:
+                        <ul>
+                            <li><strong>IntelliJ IDEA:</strong> File → Settings → Plugins → Search "Lombok" → Install. Then enable annotation processing in Settings → Build → Compiler → Annotation Processors</li>
+                            <li><strong>VS Code:</strong> Install "Lombok Annotations Support" extension from the marketplace</li>
+                            <li><strong>Eclipse:</strong> Download lombok.jar and run: <code>java -jar lombok.jar</code></li>
+                            <li><strong>NetBeans:</strong> Lombok support is built-in</li>
+                        </ul>`
+                    },
+                    {
+                        heading: 'Verifying Your Setup',
+                        content: `Run this command to verify your Java installation:`,
+                        code: `<span class="comment"># Check Java version</span>
+java -version
+
+<span class="comment"># Expected output:</span>
+openjdk version <span class="string">"${userPreferences.javaVersion}"</span>
+
+<span class="comment"># Check ${userPreferences.buildTool}</span>
+${userPreferences.buildTool.toLowerCase()} -version`
+                    }
+                ]
+            },
+            '03': {
+                title: 'Chapter 3: Core Concepts and Architecture',
+                sections: [
+                    {
+                        heading: 'Inversion of Control (IoC)',
+                        content: `Inversion of Control is a fundamental principle where the framework controls the flow of the application, rather than the application code itself. Spring manages object creation, configuration, and lifecycle.`
+                    },
+                    {
+                        heading: 'Dependency Injection',
+                        content: `Dependency Injection is how Spring implements IoC. Instead of creating dependencies manually, Spring injects them for you:`,
+                        code: `<span class="annotation">@Service</span>
+<span class="keyword">public class</span> UserService {
+    
+    <span class="keyword">private final</span> UserRepository userRepository;
+    
+    <span class="comment">// Constructor injection (recommended)</span>
+    <span class="keyword">public</span> UserService(UserRepository userRepository) {
+        <span class="keyword">this</span>.userRepository = userRepository;
+    }
+    
+    <span class="keyword">public</span> User findById(Long id) {
+        <span class="keyword">return</span> userRepository.findById(id)
+            .orElseThrow(() <span class="keyword">-&gt; new</span> UserNotFoundException(id));
+    }
+}`
+                    },
+                    {
+                        heading: 'Spring Boot Auto-Configuration',
+                        content: `Spring Boot automatically configures your application based on the dependencies in your classpath. For example, if you add <code>spring-boot-starter-web</code>, Spring Boot automatically:
+                        <ul>
+                            <li>Configures an embedded Tomcat server</li>
+                            <li>Sets up Spring MVC</li>
+                            <li>Configures JSON serialization</li>
+                            <li>Sets up error handling</li>
+                        </ul>`
+                    },
+                    {
+                        heading: 'Component Scanning',
+                        content: `Spring Boot automatically scans for components in your package and sub-packages:`,
+                        code: `<span class="annotation">@Component</span>   <span class="comment">// Generic Spring-managed component</span>
+<span class="keyword">class</span> MyComponent { }
+
+<span class="annotation">@Service</span>     <span class="comment">// Business logic layer</span>
+<span class="keyword">class</span> MyService { }
+
+<span class="annotation">@Repository</span>  <span class="comment">// Data access layer</span>
+<span class="keyword">class</span> MyRepository { }
+
+<span class="annotation">@Controller</span>  <span class="comment">// Web layer</span>
+<span class="keyword">class</span> MyController { }
+
+<span class="annotation">@RestController</span>  <span class="comment">// RESTful web services</span>
+<span class="keyword">class</span> MyRestController { }`
+                    },
+                    {
+                        heading: 'Application Properties',
+                        content: `Configure your application using application.properties or application.yml:`,
+                        code: `<span class="comment"># application.properties</span>
+server.port=<span class="string">8080</span>
+spring.application.name=<span class="string">my-app</span>
+
+<span class="comment"># Database configuration</span>
+spring.datasource.url=<span class="string">jdbc:mysql://localhost:3306/mydb</span>
+spring.datasource.username=<span class="string">root</span>
+spring.datasource.password=<span class="string">secret</span>
+
+<span class="comment"># JPA configuration</span>
+spring.jpa.hibernate.ddl-auto=<span class="string">update</span>
+spring.jpa.show-sql=<span class="string">true</span>`
+                    }
+                ]
+            }
+        };
+
         function openChapter(chapterId) {
-            alert(`Opening Chapter ${chapterId}...\n\nIn the full platform, this would:\n- Show chapter content\n- Display interactive exercises\n- Provide code examples customized to your preferences\n- Track your progress`);
-            
-            // Demo: increment progress
+            const chapter = chapterData[chapterId];
+            if (!chapter) {
+                alert('Chapter content coming soon!');
+                return;
+            }
+
+            // Hide dashboard, show chapter content
+            document.getElementById('platformContent').style.display = 'none';
+            document.getElementById('chapterContent').classList.add('active');
+
+            // Build chapter content HTML
+            let contentHTML = `
+                <div class="chapter-header">
+                    <h2>${chapter.title}</h2>
+                </div>
+            `;
+
+            chapter.sections.forEach(section => {
+                contentHTML += `
+                    <div class="chapter-section">
+                        <h3>${section.heading}</h3>
+                        <p>${section.content}</p>
+                        ${section.code ? `<div class="code-block">${section.code}</div>` : ''}
+                    </div>
+                `;
+            });
+
+            document.getElementById('chapterContentBody').innerHTML = contentHTML;
+
+            // Update progress
             demoProgress.completedChapters = Math.min(demoProgress.completedChapters + 1, 13);
             updateDashboard();
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function closeChapter() {
+            document.getElementById('chapterContent').classList.remove('active');
+            document.getElementById('platformContent').style.display = 'block';
+            window.scrollTo(0, 0);
         }
 
         function submitCode() {
