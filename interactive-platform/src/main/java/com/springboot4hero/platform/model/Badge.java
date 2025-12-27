@@ -38,6 +38,7 @@ public class Badge {
     private int pointsRequired;
     
     @OneToMany(mappedBy = "badge", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private Set<UserBadge> userBadges = new HashSet<>();
     
     public enum BadgeType {

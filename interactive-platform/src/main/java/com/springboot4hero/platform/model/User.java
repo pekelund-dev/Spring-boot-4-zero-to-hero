@@ -40,15 +40,19 @@ public class User {
     private UserPreferences preferences;
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private Set<Progress> progress = new HashSet<>();
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private Set<QuizResult> quizResults = new HashSet<>();
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private Set<ExerciseSubmission> exerciseSubmissions = new HashSet<>();
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private Set<UserBadge> badges = new HashSet<>();
     
     @Column(nullable = false)
