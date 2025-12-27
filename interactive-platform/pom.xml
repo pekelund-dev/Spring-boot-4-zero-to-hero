@@ -127,16 +127,16 @@
     
     <build>
         <plugins>
+            <!-- Maven Compiler Plugin - Java 25 support with Lombok annotation processing -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <release>${java.version}</release>
-                    <compilerArgs>
-                        <arg>-parameters</arg>
-                    </compilerArgs>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <annotationProcessorPaths>
+                        <!-- Lombok annotation processor - see https://projectlombok.org/setup/maven -->
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
@@ -145,10 +145,13 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+            
+            <!-- Spring Boot Maven Plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <!-- Exclude Lombok from the final JAR as it's compile-time only -->
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>

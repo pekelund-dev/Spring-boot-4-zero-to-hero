@@ -173,6 +173,66 @@ The project is configured with **Java 25 as the default**. To use an older Java 
 mvn clean compile
 ```
 
+### Lombok Setup
+
+This project uses **Project Lombok** to reduce boilerplate code. The Maven configuration follows the official Lombok setup guide: https://projectlombok.org/setup/maven
+
+**Maven Configuration:**
+The `pom.xml` includes Lombok annotation processing configuration:
+```xml
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <optional>true</optional>
+</dependency>
+
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.13.0</version>
+    <configuration>
+        <source>${java.version}</source>
+        <target>${java.version}</target>
+        <annotationProcessorPaths>
+            <path>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </path>
+        </annotationProcessorPaths>
+    </configuration>
+</plugin>
+```
+
+**IDE Setup:**
+
+**IntelliJ IDEA:**
+1. Install the Lombok plugin: `File` → `Settings` → `Plugins` → Search for "Lombok" → Install
+2. Enable annotation processing: `File` → `Settings` → `Build, Execution, Deployment` → `Compiler` → `Annotation Processors` → Check "Enable annotation processing"
+3. Restart IntelliJ IDEA
+
+**VS Code:**
+1. Install the "Lombok Annotations Support" extension
+2. Reload VS Code
+
+**Eclipse:**
+1. Download `lombok.jar` from https://projectlombok.org/download
+2. Run: `java -jar lombok.jar`
+3. Follow the installer to add Lombok to Eclipse
+4. Restart Eclipse
+
+**NetBeans:**
+1. Lombok should work automatically with Maven projects
+2. If not, enable annotation processing in project properties
+
+**Common Lombok Issues:**
+
+If you see "cannot find symbol" errors for getter/setter methods:
+1. Ensure annotation processing is enabled in your IDE
+2. Clean and rebuild: `mvn clean compile`
+3. Reimport the Maven project in your IDE
+4. Restart your IDE
+
 ### Installation
 
 1. Clone the repository:
