@@ -468,70 +468,8 @@
 
             <div class="chapters-list">
                 <h3 style="margin-bottom: 20px; color: #333;">📚 Course Chapters</h3>
-                
-                <div class="chapter-item" onclick="openChapter('01')">
-                    <h4>Chapter 1: Introduction to Spring Boot 4.x</h4>
-                    <p>Learn about Spring Boot 4.x and why it's the best framework for modern Java development.</p>
-                </div>
-
-                <div class="chapter-item" onclick="openChapter('02')">
-                    <h4>Chapter 2: Setting Up Your Development Environment</h4>
-                    <p>Configure your development environment with Java 25, your IDE, build tools, and Lombok plugin for cleaner code.</p>
-                </div>
-
-                <div class="chapter-item" onclick="openChapter('03')">
-                    <h4>Chapter 3: Core Concepts and Architecture</h4>
-                    <p>Understand IoC, Dependency Injection, and Spring Boot's auto-configuration.</p>
-                </div>
-
-                <div class="chapter-item" onclick="openChapter('04')">
-                    <h4>Chapter 4: Building REST APIs</h4>
-                    <p>Create RESTful web services with Spring Boot including CRUD operations, HTTP methods, and JSON handling.</p>
-                </div>
-
-                <div class="chapter-item" onclick="openChapter('05')">
-                    <h4>Chapter 5: Data Access with Spring Data JPA</h4>
-                    <p>Learn database integration, JPA entities, repositories, and query methods.</p>
-                </div>
-
-                <div class="chapter-item" onclick="openChapter('06')">
-                    <h4>Chapter 6: Security with Spring Security</h4>
-                    <p>Implement authentication, authorization, and secure your application.</p>
-                </div>
-
-                <div class="chapter-item" onclick="openChapter('07')">
-                    <h4>Chapter 7: Testing Spring Boot Applications</h4>
-                    <p>Write unit tests, integration tests, and test your REST APIs.</p>
-                </div>
-
-                <div class="chapter-item" onclick="openChapter('08')">
-                    <h4>Chapter 8: Error Handling and Validation</h4>
-                    <p>Handle exceptions gracefully and validate user input.</p>
-                </div>
-
-                <div class="chapter-item" onclick="openChapter('09')">
-                    <h4>Chapter 9: Configuration and Profiles</h4>
-                    <p>Manage configurations for different environments using profiles.</p>
-                </div>
-
-                <div class="chapter-item" onclick="openChapter('10')">
-                    <h4>Chapter 10: Actuator and Monitoring</h4>
-                    <p>Monitor your application health, metrics, and performance.</p>
-                </div>
-
-                <div class="chapter-item" onclick="openChapter('11')">
-                    <h4>Chapter 11: Asynchronous Processing</h4>
-                    <p>Handle async operations, scheduling, and virtual threads.</p>
-                </div>
-
-                <div class="chapter-item" onclick="openChapter('12')">
-                    <h4>Chapter 12: Microservices with Spring Boot</h4>
-                    <p>Build microservices architecture with service discovery and communication.</p>
-                </div>
-
-                <div class="chapter-item" onclick="openChapter('13')">
-                    <h4>Chapter 13: Deployment and Best Practices</h4>
-                    <p>Deploy your application and learn production-ready best practices.</p>
+                <div id="chaptersContainer">
+                    <p style="text-align: center; color: #666;">Loading chapters...</p>
                 </div>
             </div>
 
@@ -629,6 +567,52 @@ public class HelloController {
             document.getElementById('userBuildTool').textContent = userPreferences.buildTool;
             document.getElementById('userJava').textContent = 'Java ' + userPreferences.javaVersion;
             document.getElementById('userIDE').textContent = userPreferences.ide.replace('_', ' ');
+            
+            // Load chapters dynamically
+            loadChapters();
+        }
+
+        // Function to load chapters dynamically from the API
+        async function loadChapters() {
+            try {
+                const response = await fetch('/api/chapters');
+                const chapters = await response.json();
+                
+                const container = document.getElementById('chaptersContainer');
+                
+                if (chapters.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: #666;">No chapters available yet.</p>';
+                    return;
+                }
+                
+                container.innerHTML = '';
+                
+                chapters.forEach(chapter => {
+                    const chapterDiv = document.createElement('div');
+                    chapterDiv.className = 'chapter-item';
+                    // Extract chapter number more safely, fallback to chapterId if pattern doesn't match
+                    const chapterMatch = chapter.chapterId.match(/^(\d+)-/);
+                    const chapterNum = chapterMatch ? chapterMatch[1] : chapter.chapterId;
+                    chapterDiv.onclick = () => openChapter(chapterNum);
+                    
+                    chapterDiv.innerHTML = `
+                        <h4>${chapter.title}</h4>
+                        <p>${chapter.summary}</p>
+                    `;
+                    
+                    container.appendChild(chapterDiv);
+                });
+                
+                // Update the total chapters count in the progress
+                const totalChapters = chapters.length;
+                const progressText = document.getElementById('completedChapters').parentElement;
+                progressText.innerHTML = `<strong id="completedChapters">${demoProgress.completedChapters}</strong> of ${totalChapters} chapters completed`;
+                
+            } catch (error) {
+                console.error('Error loading chapters:', error);
+                document.getElementById('chaptersContainer').innerHTML = 
+                    '<p style="text-align: center; color: #dc3545;">Error loading chapters. Please try again later.</p>';
+            }
         }
 
         const chapterData = {

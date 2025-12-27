@@ -1,0 +1,4 @@
+{
+  "title": "Microservices Architecture",
+  "summary": "Design and implement microservices with Spring Cloud, including service discovery, API gateways, circuit breakers, and event-driven architecture."
+}

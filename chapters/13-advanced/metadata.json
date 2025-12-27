@@ -1,0 +1,4 @@
+{
+  "title": "Advanced Topics",
+  "summary": "Explore advanced Spring Boot features including reactive programming with WebFlux, caching, async processing, WebSockets, GraphQL, and GraalVM native images."
+}

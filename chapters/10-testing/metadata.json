@@ -1,0 +1,4 @@
+{
+  "title": "Testing Spring Boot Applications",
+  "summary": "Learn comprehensive testing strategies including unit tests with JUnit 5, integration testing, test containers, and measuring code coverage."
+}
