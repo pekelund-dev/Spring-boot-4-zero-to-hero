@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot 4 - Interactive Learning Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .auth-section {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .auth-section h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .google-login-btn {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+
+        .google-login-btn:hover {
+            background: #357ae8;
+        }
+
+        .setup-wizard {
+            display: none;
+            padding: 40px;
+        }
+
+        .setup-wizard h2 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .form-group select, .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group select:focus, .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .platform-content {
+            display: none;
+            padding: 40px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .chapters-list {
+            margin-top: 30px;
+        }
+
+        .chapter-item {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chapter-item:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .chapter-item h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .badge-display {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+        }
+
+        .code-editor {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin-top: 20px;
+        }
+
+        textarea.code-input {
+            width: 100%;
+            min-height: 200px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border: none;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .quiz-section {
+            margin-top: 30px;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-option {
+            padding: 10px;
+            margin: 10px 0;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .quiz-option:hover {
+            border-color: #667eea;
+        }
+
+        .quiz-option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .chapter-content {
+            padding: 40px;
+            display: none;
+        }
+
+        .chapter-content.active {
+            display: block;
+        }
+
+        .chapter-header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        .chapter-header h2 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .chapter-section {
+            margin: 30px 0;
+        }
+
+        .chapter-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .chapter-section p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .chapter-section ul {
+            margin-left: 20px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .chapter-section ul li {
+            margin: 10px 0;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .code-block .comment {
+            color: #6a9955;
+        }
+
+        .code-block .keyword {
+            color: #569cd6;
+        }
+
+        .code-block .string {
+            color: #ce9178;
+        }
+
+        .code-block .annotation {
+            color: #dcdcaa;
+        }
+
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: background 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Spring Boot 4 - Zero to Hero</h1>
+            <p>Interactive Learning Platform</p>
+        </header>
+
+        <!-- Authentication Section (hidden in demo mode) -->
+        <div class="auth-section" id="authSection" style="display: none;">
+            <h2>Welcome to the Interactive Learning Platform!</h2>
+            <p style="margin: 20px 0; color: #666;">Sign in with Google to start your Spring Boot journey and track your progress.</p>
+            <button class="google-login-btn" onclick="loginWithGoogle()">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Sign in with Google
+            </button>
+            <p style="margin-top: 20px; color: #999; font-size: 14px;">
+                Note: This is a demo. Google OAuth is not configured in this environment.<br>
+                Click below to see a demo of the platform.
+            </p>
+            <button class="btn" onclick="showDemo()" style="margin-top: 15px;">
+                View Demo Mode
+            </button>
+        </div>
+
+        <!-- Setup Wizard -->
+        <div class="setup-wizard" id="setupWizard" style="display: block;">
+            <h2>⚙️ Setup Your Learning Environment</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 30px;">
+                Tell us about your preferences so we can customize the course for you.
+            </p>
+
+            <div class="form-group">
+                <label for="os">Operating System</label>
+                <select id="os">
+                    <option value="MAC">macOS</option>
+                    <option value="WINDOWS">Windows</option>
+                    <option value="LINUX">Linux</option>
+                    <option value="WINDOWS_WSL2">Windows with WSL2</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="buildTool">Build Tool</label>
+                <select id="buildTool">
+                    <option value="MAVEN">Maven</option>
+                    <option value="GRADLE">Gradle</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="javaVersion">Java Version</label>
+                <select id="javaVersion">
+                    <option value="25" selected>Java 25 (Latest)</option>
+                    <option value="23">Java 23</option>
+                    <option value="21">Java 21 (LTS)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ide">IDE</label>
+                <select id="ide">
+                    <option value="INTELLIJ_IDEA">IntelliJ IDEA</option>
+                    <option value="VS_CODE">VS Code</option>
+                    <option value="ECLIPSE">Eclipse</option>
+                    <option value="NETBEANS">NetBeans</option>
+                </select>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn" onclick="savePreferences()">Start Learning! 🎉</button>
+            </div>
+        </div>
+
+        <!-- Platform Content -->
+        <div class="platform-content" id="platformContent">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <h2 style="margin: 0; color: #333;">Your Learning Dashboard</h2>
+                <button class="btn" onclick="resetProgress()" style="background: #dc3545;">
+                    🔄 Reset Progress
+                </button>
+            </div>
+
+            <div class="dashboard">
+                <div class="card">
+                    <h3>📊 Progress</h3>
+                    <p><strong id="completedChapters">0</strong> of 13 chapters completed</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🏆 Badges</h3>
+                    <p><strong id="badgeCount">0</strong> badges earned</p>
+                    <div class="badge-display" id="badgeDisplay">
+                        <div class="badge">🌟 Beginner</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>💯 Quiz Score</h3>
+                    <p>Average: <strong id="averageScore">0</strong>%</p>
+                    <p style="margin-top: 10px;">Quizzes completed: <strong id="quizCount">0</strong></p>
+                </div>
+
+                <div class="card">
+                    <h3>⚙️ Your Setup</h3>
+                    <p><strong id="userOS">macOS</strong></p>
+                    <p><strong id="userBuildTool">Maven</strong></p>
+                    <p><strong id="userJava">Java 25</strong></p>
+                    <p><strong id="userIDE">IntelliJ IDEA</strong></p>
+                </div>
+            </div>
+
+            <div class="chapters-list">
+                <h3 style="margin-bottom: 20px; color: #333;">📚 Course Chapters</h3>
+                
+                <div class="chapter-item" onclick="openChapter('01')">
+                    <h4>Chapter 1: Introduction to Spring Boot 4.x</h4>
+                    <p>Learn about Spring Boot 4.x and why it's the best framework for modern Java development.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('02')">
+                    <h4>Chapter 2: Setting Up Your Development Environment</h4>
+                    <p>Configure your development environment with Java 25, your IDE, build tools, and Lombok plugin for cleaner code.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('03')">
+                    <h4>Chapter 3: Core Concepts and Architecture</h4>
+                    <p>Understand IoC, Dependency Injection, and Spring Boot's auto-configuration.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('04')">
+                    <h4>Chapter 4: Building REST APIs</h4>
+                    <p>Create RESTful web services with Spring Boot including CRUD operations, HTTP methods, and JSON handling.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('05')">
+                    <h4>Chapter 5: Data Access with Spring Data JPA</h4>
+                    <p>Learn database integration, JPA entities, repositories, and query methods.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('06')">
+                    <h4>Chapter 6: Security with Spring Security</h4>
+                    <p>Implement authentication, authorization, and secure your application.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('07')">
+                    <h4>Chapter 7: Testing Spring Boot Applications</h4>
+                    <p>Write unit tests, integration tests, and test your REST APIs.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('08')">
+                    <h4>Chapter 8: Error Handling and Validation</h4>
+                    <p>Handle exceptions gracefully and validate user input.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('09')">
+                    <h4>Chapter 9: Configuration and Profiles</h4>
+                    <p>Manage configurations for different environments using profiles.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('10')">
+                    <h4>Chapter 10: Actuator and Monitoring</h4>
+                    <p>Monitor your application health, metrics, and performance.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('11')">
+                    <h4>Chapter 11: Asynchronous Processing</h4>
+                    <p>Handle async operations, scheduling, and virtual threads.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('12')">
+                    <h4>Chapter 12: Microservices with Spring Boot</h4>
+                    <p>Build microservices architecture with service discovery and communication.</p>
+                </div>
+
+                <div class="chapter-item" onclick="openChapter('13')">
+                    <h4>Chapter 13: Deployment and Best Practices</h4>
+                    <p>Deploy your application and learn production-ready best practices.</p>
+                </div>
+            </div>
+
+            <!-- Interactive Code Exercise Example -->
+            <div style="margin-top: 40px;">
+                <h3 style="margin-bottom: 20px; color: #333;">💻 Try an Interactive Exercise</h3>
+                <div class="card">
+                    <h4>Exercise: Create Your First Spring Boot Controller</h4>
+                    <p style="margin: 15px 0;">Create a simple REST controller that returns "Hello, Spring Boot 4!"</p>
+                    
+                    <textarea class="code-input" id="codeInput" placeholder="Write your code here...">@RestController
+public class HelloController {
+    
+    // Add your code here
+    
+}</textarea>
+
+                    <div style="margin-top: 15px; display: flex; gap: 10px;">
+                        <button class="btn" onclick="submitCode()">Submit Code</button>
+                        <button class="btn" style="background: #6c757d;" onclick="showHint()">Show Hint</button>
+                    </div>
+                    
+                    <div id="feedback" style="margin-top: 15px; padding: 15px; border-radius: 5px; display: none;"></div>
+                </div>
+            </div>
+
+            <!-- Quiz Example -->
+            <div class="quiz-section">
+                <h3 style="margin-bottom: 20px; color: #333;">❓ Sample Quiz Question</h3>
+                <div class="quiz-question">
+                    <h4>What does IoC stand for in Spring?</h4>
+                    <div class="quiz-option" onclick="selectOption(this, 'a')">
+                        A) Input Output Control
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, 'b')">
+                        B) Inversion of Control
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, 'c')">
+                        C) Internal Object Configuration
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, 'd')">
+                        D) Integrated Operation Container
+                    </div>
+                    <button class="btn" style="margin-top: 15px;" onclick="submitQuiz()">Submit Answer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter Content View -->
+        <div class="chapter-content" id="chapterContent">
+            <button class="back-btn" onclick="closeChapter()">← Back to Dashboard</button>
+            <div id="chapterContentBody">
+                <!-- Chapter content will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let userPreferences = {
+            os: 'MAC',
+            buildTool: 'MAVEN',
+            javaVersion: '21',
+            ide: 'INTELLIJ_IDEA'
+        };
+
+        let selectedQuizAnswer = null;
+        let demoProgress = {
+            completedChapters: 0,
+            badges: 1,
+            quizScore: 0,
+            quizCount: 0
+        };
+
+        function loginWithGoogle() {
+            // In production, this would redirect to: /oauth2/authorization/google
+            alert('In a production environment, this would initiate Google OAuth login.\n\nFor now, use "View Demo Mode" to explore the platform.');
+        }
+
+        function showDemo() {
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('setupWizard').style.display = 'block';
+        }
+
+        function savePreferences() {
+            userPreferences.os = document.getElementById('os').value;
+            userPreferences.buildTool = document.getElementById('buildTool').value;
+            userPreferences.javaVersion = document.getElementById('javaVersion').value;
+            userPreferences.ide = document.getElementById('ide').value;
+
+            document.getElementById('setupWizard').style.display = 'none';
+            document.getElementById('platformContent').style.display = 'block';
+
+            // Update display
+            document.getElementById('userOS').textContent = userPreferences.os.replace('_', ' ');
+            document.getElementById('userBuildTool').textContent = userPreferences.buildTool;
+            document.getElementById('userJava').textContent = 'Java ' + userPreferences.javaVersion;
+            document.getElementById('userIDE').textContent = userPreferences.ide.replace('_', ' ');
+        }
+
+        const chapterData = {
+            '01': {
+                title: 'Chapter 1: Introduction to Spring Boot 4.x',
+                sections: [
+                    {
+                        heading: 'What is Spring Boot 4.x?',
+                        content: `Spring Boot 4.x is the latest major release of the Spring Boot framework, designed to simplify the development of production-ready Spring applications. It builds upon the solid foundation of previous versions while introducing modern features and improvements.`
+                    },
+                    {
+                        heading: 'Key Features',
+                        content: `Spring Boot 4.x introduces several groundbreaking features:
+                        <ul>
+                            <li><strong>Enhanced Java 25 Support</strong> - Full compatibility with the latest Java features including pattern matching, records, and virtual threads</li>
+                            <li><strong>Improved Startup Performance</strong> - Faster application startup times with optimized auto-configuration</li>
+                            <li><strong>Native Image Support</strong> - Better GraalVM native image compilation for faster startup and lower memory footprint</li>
+                            <li><strong>Enhanced Observability</strong> - Built-in support for modern observability tools and metrics</li>
+                            <li><strong>Simplified Configuration</strong> - Even easier configuration with smart defaults and improved property management</li>
+                        </ul>`
+                    },
+                    {
+                        heading: 'Your First Spring Boot Application',
+                        content: `Let's look at a simple Spring Boot 4.x application:`,
+                        code: `<span class="annotation">@SpringBootApplication</span>
+<span class="keyword">public class</span> MyApplication {
+    
+    <span class="keyword">public static void</span> main(String[] args) {
+        SpringApplication.run(MyApplication.<span class="keyword">class</span>, args);
+    }
+}
+
+<span class="annotation">@RestController</span>
+<span class="keyword">class</span> HelloController {
+    
+    <span class="annotation">@GetMapping</span>(<span class="string">"/hello"</span>)
+    <span class="keyword">public</span> String hello() {
+        <span class="keyword">return</span> <span class="string">"Hello, Spring Boot 4!"</span>;
+    }
+}`
+                    },
+                    {
+                        heading: 'Why Choose Spring Boot 4.x?',
+                        content: `<ul>
+                            <li><strong>Productivity</strong> - Write less boilerplate code, focus on business logic</li>
+                            <li><strong>Modern Java</strong> - Leverage the latest Java features seamlessly</li>
+                            <li><strong>Production-Ready</strong> - Built-in monitoring, health checks, and metrics</li>
+                            <li><strong>Ecosystem</strong> - Vast ecosystem of libraries and integrations</li>
+                            <li><strong>Community</strong> - Large, active community and excellent documentation</li>
+                        </ul>`
+                    }
+                ]
+            },
+            '02': {
+                title: 'Chapter 2: Setting Up Your Development Environment',
+                sections: [
+                    {
+                        heading: 'Installing Java 25',
+                        content: `To develop with Spring Boot 4.x, you'll need Java 25 installed on your system. Based on your preferences, you're using <strong>${userPreferences.os.replace('_', ' ')}</strong>.`
+                    },
+                    {
+                        heading: 'Choosing Your IDE',
+                        content: `You've selected <strong>${userPreferences.ide.replace('_', ' ')}</strong> as your IDE. This is an excellent choice for Spring Boot development! Here's how to optimize it:`
+                    },
+                    {
+                        heading: 'Setting Up Your Build Tool',
+                        content: `You're using <strong>${userPreferences.buildTool}</strong>. Here's a sample configuration:`,
+                        code: userPreferences.buildTool === 'MAVEN' ? 
+`<span class="comment">&lt;!-- pom.xml --&gt;</span>
+&lt;<span class="keyword">project</span>&gt;
+    &lt;<span class="keyword">parent</span>&gt;
+        &lt;<span class="keyword">groupId</span>&gt;org.springframework.boot&lt;/<span class="keyword">groupId</span>&gt;
+        &lt;<span class="keyword">artifactId</span>&gt;spring-boot-starter-parent&lt;/<span class="keyword">artifactId</span>&gt;
+        &lt;<span class="keyword">version</span>&gt;<span class="string">4.0.1</span>&lt;/<span class="keyword">version</span>&gt;
+    &lt;/<span class="keyword">parent</span>&gt;
+    
+    &lt;<span class="keyword">properties</span>&gt;
+        &lt;<span class="keyword">java.version</span>&gt;<span class="string">${userPreferences.javaVersion}</span>&lt;/<span class="keyword">java.version</span>&gt;
+        &lt;<span class="keyword">lombok.version</span>&gt;<span class="string">1.18.42</span>&lt;/<span class="keyword">lombok.version</span>&gt;
+    &lt;/<span class="keyword">properties</span>&gt;
+    
+    &lt;<span class="keyword">dependencies</span>&gt;
+        &lt;<span class="keyword">dependency</span>&gt;
+            &lt;<span class="keyword">groupId</span>&gt;org.springframework.boot&lt;/<span class="keyword">groupId</span>&gt;
+            &lt;<span class="keyword">artifactId</span>&gt;spring-boot-starter-web&lt;/<span class="keyword">artifactId</span>&gt;
+        &lt;/<span class="keyword">dependency</span>&gt;
+        &lt;<span class="keyword">dependency</span>&gt;
+            &lt;<span class="keyword">groupId</span>&gt;org.projectlombok&lt;/<span class="keyword">groupId</span>&gt;
+            &lt;<span class="keyword">artifactId</span>&gt;lombok&lt;/<span class="keyword">artifactId</span>&gt;
+        &lt;/<span class="keyword">dependency</span>&gt;
+    &lt;/<span class="keyword">dependencies</span>&gt;
+&lt;/<span class="keyword">project</span>&gt;` :
+`<span class="comment">// build.gradle</span>
+plugins {
+    id <span class="string">'org.springframework.boot'</span> version <span class="string">'4.0.1'</span>
+    id <span class="string">'io.spring.dependency-management'</span> version <span class="string">'1.1.0'</span>
+    id <span class="string">'java'</span>
+}
+
+sourceCompatibility = <span class="string">'${userPreferences.javaVersion}'</span>
+
+dependencies {
+    implementation <span class="string">'org.springframework.boot:spring-boot-starter-web'</span>
+    compileOnly <span class="string">'org.projectlombok:lombok:1.18.42'</span>
+    annotationProcessor <span class="string">'org.projectlombok:lombok:1.18.42'</span>
+}`
+                    },
+                    {
+                        heading: 'Installing Lombok Plugin',
+                        content: `Lombok helps reduce boilerplate code. Install the Lombok plugin for ${userPreferences.ide.replace('_', ' ')}:
+                        <ul>
+                            <li><strong>IntelliJ IDEA:</strong> File → Settings → Plugins → Search "Lombok" → Install. Then enable annotation processing in Settings → Build → Compiler → Annotation Processors</li>
+                            <li><strong>VS Code:</strong> Install "Lombok Annotations Support" extension from the marketplace</li>
+                            <li><strong>Eclipse:</strong> Download lombok.jar and run: <code>java -jar lombok.jar</code></li>
+                            <li><strong>NetBeans:</strong> Lombok support is built-in</li>
+                        </ul>`
+                    },
+                    {
+                        heading: 'Verifying Your Setup',
+                        content: `Run this command to verify your Java installation:`,
+                        code: `<span class="comment"># Check Java version</span>
+java -version
+
+<span class="comment"># Expected output:</span>
+openjdk version <span class="string">"${userPreferences.javaVersion}"</span>
+
+<span class="comment"># Check ${userPreferences.buildTool}</span>
+${userPreferences.buildTool.toLowerCase()} -version`
+                    }
+                ]
+            },
+            '03': {
+                title: 'Chapter 3: Core Concepts and Architecture',
+                sections: [
+                    {
+                        heading: 'Inversion of Control (IoC)',
+                        content: `Inversion of Control is a fundamental principle where the framework controls the flow of the application, rather than the application code itself. Spring manages object creation, configuration, and lifecycle.`
+                    },
+                    {
+                        heading: 'Dependency Injection',
+                        content: `Dependency Injection is how Spring implements IoC. Instead of creating dependencies manually, Spring injects them for you:`,
+                        code: `<span class="annotation">@Service</span>
+<span class="keyword">public class</span> UserService {
+    
+    <span class="keyword">private final</span> UserRepository userRepository;
+    
+    <span class="comment">// Constructor injection (recommended)</span>
+    <span class="keyword">public</span> UserService(UserRepository userRepository) {
+        <span class="keyword">this</span>.userRepository = userRepository;
+    }
+    
+    <span class="keyword">public</span> User findById(Long id) {
+        <span class="keyword">return</span> userRepository.findById(id)
+            .orElseThrow(() <span class="keyword">-&gt; new</span> UserNotFoundException(id));
+    }
+}`
+                    },
+                    {
+                        heading: 'Spring Boot Auto-Configuration',
+                        content: `Spring Boot automatically configures your application based on the dependencies in your classpath. For example, if you add <code>spring-boot-starter-web</code>, Spring Boot automatically:
+                        <ul>
+                            <li>Configures an embedded Tomcat server</li>
+                            <li>Sets up Spring MVC</li>
+                            <li>Configures JSON serialization</li>
+                            <li>Sets up error handling</li>
+                        </ul>`
+                    },
+                    {
+                        heading: 'Component Scanning',
+                        content: `Spring Boot automatically scans for components in your package and sub-packages:`,
+                        code: `<span class="annotation">@Component</span>   <span class="comment">// Generic Spring-managed component</span>
+<span class="keyword">class</span> MyComponent { }
+
+<span class="annotation">@Service</span>     <span class="comment">// Business logic layer</span>
+<span class="keyword">class</span> MyService { }
+
+<span class="annotation">@Repository</span>  <span class="comment">// Data access layer</span>
+<span class="keyword">class</span> MyRepository { }
+
+<span class="annotation">@Controller</span>  <span class="comment">// Web layer</span>
+<span class="keyword">class</span> MyController { }
+
+<span class="annotation">@RestController</span>  <span class="comment">// RESTful web services</span>
+<span class="keyword">class</span> MyRestController { }`
+                    },
+                    {
+                        heading: 'Application Properties',
+                        content: `Configure your application using application.properties or application.yml:`,
+                        code: `<span class="comment"># application.properties</span>
+server.port=<span class="string">8080</span>
+spring.application.name=<span class="string">my-app</span>
+
+<span class="comment"># Database configuration</span>
+spring.datasource.url=<span class="string">jdbc:mysql://localhost:3306/mydb</span>
+spring.datasource.username=<span class="string">root</span>
+spring.datasource.password=<span class="string">secret</span>
+
+<span class="comment"># JPA configuration</span>
+spring.jpa.hibernate.ddl-auto=<span class="string">update</span>
+spring.jpa.show-sql=<span class="string">true</span>`
+                    }
+                ]
+            },
+            '04': {
+                title: 'Chapter 4: Building REST APIs',
+                sections: [
+                    {
+                        heading: 'What is REST?',
+                        content: `REST (Representational State Transfer) is an architectural style for designing networked applications. RESTful APIs use HTTP methods to perform CRUD operations on resources.`
+                    },
+                    {
+                        heading: 'Creating a REST Controller',
+                        content: `Use @RestController to create REST endpoints:`,
+                        code: `<span class="annotation">@RestController</span>
+<span class="annotation">@RequestMapping</span>(<span class="string">"/api/users"</span>)
+<span class="keyword">public class</span> UserController {
+    
+    <span class="keyword">private final</span> UserService userService;
+    
+    <span class="keyword">public</span> UserController(UserService userService) {
+        <span class="keyword">this</span>.userService = userService;
+    }
+    
+    <span class="comment">// GET all users</span>
+    <span class="annotation">@GetMapping</span>
+    <span class="keyword">public</span> List&lt;User&gt; getAllUsers() {
+        <span class="keyword">return</span> userService.findAll();
+    }
+    
+    <span class="comment">// GET user by ID</span>
+    <span class="annotation">@GetMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public</span> User getUserById(<span class="annotation">@PathVariable</span> Long id) {
+        <span class="keyword">return</span> userService.findById(id);
+    }
+    
+    <span class="comment">// POST create new user</span>
+    <span class="annotation">@PostMapping</span>
+    <span class="annotation">@ResponseStatus</span>(HttpStatus.CREATED)
+    <span class="keyword">public</span> User createUser(<span class="annotation">@RequestBody</span> User user) {
+        <span class="keyword">return</span> userService.create(user);
+    }
+    
+    <span class="comment">// PUT update user</span>
+    <span class="annotation">@PutMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public</span> User updateUser(<span class="annotation">@PathVariable</span> Long id, 
+                              <span class="annotation">@RequestBody</span> User user) {
+        <span class="keyword">return</span> userService.update(id, user);
+    }
+    
+    <span class="comment">// DELETE user</span>
+    <span class="annotation">@DeleteMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="annotation">@ResponseStatus</span>(HttpStatus.NO_CONTENT)
+    <span class="keyword">public void</span> deleteUser(<span class="annotation">@PathVariable</span> Long id) {
+        userService.delete(id);
+    }
+}`
+                    },
+                    {
+                        heading: 'HTTP Methods',
+                        content: `<ul>
+                            <li><strong>GET</strong> - Retrieve resources (read operation)</li>
+                            <li><strong>POST</strong> - Create new resources</li>
+                            <li><strong>PUT</strong> - Update existing resources</li>
+                            <li><strong>PATCH</strong> - Partially update resources</li>
+                            <li><strong>DELETE</strong> - Remove resources</li>
+                        </ul>`
+                    },
+                    {
+                        heading: 'Response Entity',
+                        content: `Control HTTP responses with ResponseEntity:`,
+                        code: `<span class="annotation">@GetMapping</span>(<span class="string">"/{id}"</span>)
+<span class="keyword">public</span> ResponseEntity&lt;User&gt; getUserById(<span class="annotation">@PathVariable</span> Long id) {
+    <span class="keyword">return</span> userService.findById(id)
+        .map(user <span class="keyword">-&gt;</span> ResponseEntity.ok(user))
+        .orElse(ResponseEntity.notFound().build());
+}`
+                    }
+                ]
+            },
+            '05': {
+                title: 'Chapter 5: Data Access with Spring Data JPA',
+                sections: [
+                    {
+                        heading: 'What is Spring Data JPA?',
+                        content: `Spring Data JPA simplifies database access by providing a repository abstraction. It automatically implements common database operations.`
+                    },
+                    {
+                        heading: 'Creating an Entity',
+                        content: `Define JPA entities using annotations:`,
+                        code: `<span class="annotation">@Entity</span>
+<span class="annotation">@Table</span>(name = <span class="string">"users"</span>)
+<span class="annotation">@Data</span>  <span class="comment">// Lombok: generates getters, setters, etc.</span>
+<span class="annotation">@NoArgsConstructor</span>
+<span class="annotation">@AllArgsConstructor</span>
+<span class="keyword">public class</span> User {
+    
+    <span class="annotation">@Id</span>
+    <span class="annotation">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)
+    <span class="keyword">private</span> Long id;
+    
+    <span class="annotation">@Column</span>(nullable = <span class="keyword">false</span>, unique = <span class="keyword">true</span>)
+    <span class="keyword">private</span> String email;
+    
+    <span class="annotation">@Column</span>(nullable = <span class="keyword">false</span>)
+    <span class="keyword">private</span> String name;
+    
+    <span class="annotation">@Column</span>(name = <span class="string">"created_at"</span>)
+    <span class="keyword">private</span> LocalDateTime createdAt;
+    
+    <span class="annotation">@PrePersist</span>
+    <span class="keyword">protected void</span> onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+}`
+                    },
+                    {
+                        heading: 'Creating a Repository',
+                        content: `Extend JpaRepository for CRUD operations:`,
+                        code: `<span class="annotation">@Repository</span>
+<span class="keyword">public interface</span> UserRepository <span class="keyword">extends</span> JpaRepository&lt;User, Long&gt; {
+    
+    <span class="comment">// Query methods are auto-implemented!</span>
+    Optional&lt;User&gt; findByEmail(String email);
+    
+    List&lt;User&gt; findByNameContaining(String keyword);
+    
+    <span class="annotation">@Query</span>(<span class="string">"SELECT u FROM User u WHERE u.createdAt > :date"</span>)
+    List&lt;User&gt; findRecentUsers(<span class="annotation">@Param</span>(<span class="string">"date"</span>) LocalDateTime date);
+    
+    <span class="keyword">boolean</span> existsByEmail(String email);
+}`
+                    },
+                    {
+                        heading: 'Database Configuration',
+                        content: `Configure your database in application.properties:`,
+                        code: `<span class="comment"># H2 Database (for development)</span>
+spring.datasource.url=<span class="string">jdbc:h2:mem:testdb</span>
+spring.h2.console.enabled=<span class="string">true</span>
+
+<span class="comment"># MySQL (for production)</span>
+spring.datasource.url=<span class="string">jdbc:mysql://localhost:3306/mydb</span>
+spring.datasource.username=<span class="string">root</span>
+spring.datasource.password=<span class="string">secret</span>
+spring.jpa.hibernate.ddl-auto=<span class="string">update</span>`
+                    }
+                ]
+            },
+            '06': {
+                title: 'Chapter 6: Security with Spring Security',
+                sections: [
+                    {
+                        heading: 'Spring Security Basics',
+                        content: `Spring Security provides authentication and authorization for your application. It protects endpoints and manages user sessions.`
+                    },
+                    {
+                        heading: 'Basic Security Configuration',
+                        content: `Configure security with SecurityFilterChain:`,
+                        code: `<span class="annotation">@Configuration</span>
+<span class="annotation">@EnableWebSecurity</span>
+<span class="keyword">public class</span> SecurityConfig {
+    
+    <span class="annotation">@Bean</span>
+    <span class="keyword">public</span> SecurityFilterChain securityFilterChain(HttpSecurity http) 
+            <span class="keyword">throws</span> Exception {
+        http
+            .authorizeHttpRequests(auth <span class="keyword">-&gt;</span> auth
+                .requestMatchers(<span class="string">"/api/public/**"</span>).permitAll()
+                .requestMatchers(<span class="string">"/api/admin/**"</span>).hasRole(<span class="string">"ADMIN"</span>)
+                .anyRequest().authenticated()
+            )
+            .formLogin(form <span class="keyword">-&gt;</span> form
+                .loginPage(<span class="string">"/login"</span>)
+                .permitAll()
+            )
+            .logout(logout <span class="keyword">-&gt;</span> logout.permitAll());
+        
+        <span class="keyword">return</span> http.build();
+    }
+}`
+                    },
+                    {
+                        heading: 'User Details Service',
+                        content: `Implement custom user authentication:`,
+                        code: `<span class="annotation">@Service</span>
+<span class="keyword">public class</span> CustomUserDetailsService 
+        <span class="keyword">implements</span> UserDetailsService {
+    
+    <span class="keyword">private final</span> UserRepository userRepository;
+    
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> UserDetails loadUserByUsername(String email) 
+            <span class="keyword">throws</span> UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() <span class="keyword">-&gt; new</span> UsernameNotFoundException(
+                <span class="string">"User not found: "</span> + email));
+        
+        <span class="keyword">return</span> org.springframework.security.core.userdetails.User
+            .withUsername(user.getEmail())
+            .password(user.getPassword())
+            .roles(user.getRole())
+            .build();
+    }
+}`
+                    },
+                    {
+                        heading: 'JWT Authentication',
+                        content: `Implement JWT tokens for stateless authentication. JWT (JSON Web Token) allows secure transmission of information between client and server.`
+                    }
+                ]
+            },
+            '07': {
+                title: 'Chapter 7: Testing Spring Boot Applications',
+                sections: [
+                    {
+                        heading: 'Testing Strategy',
+                        content: `A good testing strategy includes:
+                        <ul>
+                            <li><strong>Unit Tests</strong> - Test individual components in isolation</li>
+                            <li><strong>Integration Tests</strong> - Test component interactions</li>
+                            <li><strong>End-to-End Tests</strong> - Test complete user flows</li>
+                        </ul>`
+                    },
+                    {
+                        heading: 'Unit Testing Services',
+                        content: `Test business logic with JUnit and Mockito:`,
+                        code: `<span class="annotation">@ExtendWith</span>(MockitoExtension.<span class="keyword">class</span>)
+<span class="keyword">class</span> UserServiceTest {
+    
+    <span class="annotation">@Mock</span>
+    <span class="keyword">private</span> UserRepository userRepository;
+    
+    <span class="annotation">@InjectMocks</span>
+    <span class="keyword">private</span> UserService userService;
+    
+    <span class="annotation">@Test</span>
+    <span class="keyword">void</span> testFindById() {
+        <span class="comment">// Given</span>
+        User user = <span class="keyword">new</span> User(<span class="string">"test@example.com"</span>, <span class="string">"Test User"</span>);
+        when(userRepository.findById(1L))
+            .thenReturn(Optional.of(user));
+        
+        <span class="comment">// When</span>
+        User result = userService.findById(1L);
+        
+        <span class="comment">// Then</span>
+        assertNotNull(result);
+        assertEquals(<span class="string">"test@example.com"</span>, result.getEmail());
+        verify(userRepository).findById(1L);
+    }
+}`
+                    },
+                    {
+                        heading: 'Testing REST Controllers',
+                        content: `Test your APIs with MockMvc:`,
+                        code: `<span class="annotation">@WebMvcTest</span>(UserController.<span class="keyword">class</span>)
+<span class="keyword">class</span> UserControllerTest {
+    
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> MockMvc mockMvc;
+    
+    <span class="annotation">@MockBean</span>
+    <span class="keyword">private</span> UserService userService;
+    
+    <span class="annotation">@Test</span>
+    <span class="keyword">void</span> testGetUser() <span class="keyword">throws</span> Exception {
+        User user = <span class="keyword">new</span> User(<span class="string">"test@test.com"</span>, <span class="string">"Test"</span>);
+        when(userService.findById(1L)).thenReturn(user);
+        
+        mockMvc.perform(get(<span class="string">"/api/users/1"</span>))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath(<span class="string">"$.email"</span>)
+                .value(<span class="string">"test@test.com"</span>));
+    }
+}`
+                    },
+                    {
+                        heading: 'Integration Tests',
+                        content: `Test with real database using @SpringBootTest:`,
+                        code: `<span class="annotation">@SpringBootTest</span>
+<span class="annotation">@AutoConfigureTestDatabase</span>
+<span class="keyword">class</span> UserIntegrationTest {
+    
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> UserRepository userRepository;
+    
+    <span class="annotation">@Test</span>
+    <span class="keyword">void</span> testSaveAndFind() {
+        User user = <span class="keyword">new</span> User(<span class="string">"test@test.com"</span>, <span class="string">"Test"</span>);
+        User saved = userRepository.save(user);
+        
+        Optional&lt;User&gt; found = userRepository.findById(saved.getId());
+        assertTrue(found.isPresent());
+        assertEquals(<span class="string">"test@test.com"</span>, found.get().getEmail());
+    }
+}`
+                    }
+                ]
+            },
+            '08': {
+                title: 'Chapter 8: Error Handling and Validation',
+                sections: [
+                    {
+                        heading: 'Global Exception Handler',
+                        content: `Handle exceptions globally with @ControllerAdvice:`,
+                        code: `<span class="annotation">@RestControllerAdvice</span>
+<span class="keyword">public class</span> GlobalExceptionHandler {
+    
+    <span class="annotation">@ExceptionHandler</span>(ResourceNotFoundException.<span class="keyword">class</span>)
+    <span class="annotation">@ResponseStatus</span>(HttpStatus.NOT_FOUND)
+    <span class="keyword">public</span> ErrorResponse handleNotFound(
+            ResourceNotFoundException ex) {
+        <span class="keyword">return new</span> ErrorResponse(
+            HttpStatus.NOT_FOUND.value(),
+            ex.getMessage(),
+            LocalDateTime.now()
+        );
+    }
+    
+    <span class="annotation">@ExceptionHandler</span>(MethodArgumentNotValidException.<span class="keyword">class</span>)
+    <span class="annotation">@ResponseStatus</span>(HttpStatus.BAD_REQUEST)
+    <span class="keyword">public</span> ValidationErrorResponse handleValidation(
+            MethodArgumentNotValidException ex) {
+        Map&lt;String, String&gt; errors = <span class="keyword">new</span> HashMap&lt;&gt;();
+        ex.getBindingResult().getFieldErrors()
+            .forEach(error <span class="keyword">-&gt;</span> 
+                errors.put(error.getField(), 
+                          error.getDefaultMessage()));
+        <span class="keyword">return new</span> ValidationErrorResponse(errors);
+    }
+}`
+                    },
+                    {
+                        heading: 'Input Validation',
+                        content: `Validate request data with Bean Validation:`,
+                        code: `<span class="annotation">@Data</span>
+<span class="keyword">public class</span> CreateUserRequest {
+    
+    <span class="annotation">@NotBlank</span>(message = <span class="string">"Email is required"</span>)
+    <span class="annotation">@Email</span>(message = <span class="string">"Invalid email format"</span>)
+    <span class="keyword">private</span> String email;
+    
+    <span class="annotation">@NotBlank</span>(message = <span class="string">"Name is required"</span>)
+    <span class="annotation">@Size</span>(min = 2, max = 50, 
+          message = <span class="string">"Name must be 2-50 characters"</span>)
+    <span class="keyword">private</span> String name;
+    
+    <span class="annotation">@NotNull</span>
+    <span class="annotation">@Min</span>(value = 18, message = <span class="string">"Must be 18 or older"</span>)
+    <span class="keyword">private</span> Integer age;
+}
+
+<span class="comment">// In controller:</span>
+<span class="annotation">@PostMapping</span>
+<span class="keyword">public</span> User createUser(
+        <span class="annotation">@Valid</span> <span class="annotation">@RequestBody</span> CreateUserRequest request) {
+    <span class="keyword">return</span> userService.create(request);
+}`
+                    },
+                    {
+                        heading: 'Custom Validators',
+                        content: `Create custom validation annotations for complex rules.`
+                    }
+                ]
+            },
+            '09': {
+                title: 'Chapter 9: Configuration and Profiles',
+                sections: [
+                    {
+                        heading: 'Application Profiles',
+                        content: `Use profiles to manage different environments (dev, test, prod):`,
+                        code: `<span class="comment"># application.properties (common)</span>
+spring.application.name=<span class="string">my-app</span>
+
+<span class="comment"># application-dev.properties (development)</span>
+spring.datasource.url=<span class="string">jdbc:h2:mem:devdb</span>
+logging.level.root=<span class="string">DEBUG</span>
+
+<span class="comment"># application-prod.properties (production)</span>
+spring.datasource.url=<span class="string">jdbc:mysql://prod-db:3306/mydb</span>
+logging.level.root=<span class="string">INFO</span>
+
+<span class="comment"># Activate profile</span>
+spring.profiles.active=<span class="string">dev</span>`
+                    },
+                    {
+                        heading: 'Configuration Properties',
+                        content: `Externalize configuration with type-safe properties:`,
+                        code: `<span class="annotation">@Configuration</span>
+<span class="annotation">@ConfigurationProperties</span>(prefix = <span class="string">"app"</span>)
+<span class="annotation">@Data</span>
+<span class="keyword">public class</span> AppProperties {
+    
+    <span class="keyword">private</span> String name;
+    <span class="keyword">private</span> String version;
+    <span class="keyword">private</span> Security security = <span class="keyword">new</span> Security();
+    
+    <span class="annotation">@Data</span>
+    <span class="keyword">public static class</span> Security {
+        <span class="keyword">private</span> String jwtSecret;
+        <span class="keyword">private</span> <span class="keyword">long</span> jwtExpiration = 86400000;
+    }
+}
+
+<span class="comment"># In application.properties:</span>
+app.name=<span class="string">My Application</span>
+app.version=<span class="string">1.0.0</span>
+app.security.jwt-secret=<span class="string">my-secret-key</span>`
+                    },
+                    {
+                        heading: 'Environment Variables',
+                        content: `Override properties with environment variables for sensitive data like passwords and API keys.`
+                    }
+                ]
+            },
+            '10': {
+                title: 'Chapter 10: Actuator and Monitoring',
+                sections: [
+                    {
+                        heading: 'Spring Boot Actuator',
+                        content: `Actuator provides production-ready features for monitoring:`,
+                        code: `<span class="comment">&lt;!-- Add dependency --&gt;</span>
+&lt;<span class="keyword">dependency</span>&gt;
+    &lt;<span class="keyword">groupId</span>&gt;org.springframework.boot&lt;/<span class="keyword">groupId</span>&gt;
+    &lt;<span class="keyword">artifactId</span>&gt;spring-boot-starter-actuator&lt;/<span class="keyword">artifactId</span>&gt;
+&lt;/<span class="keyword">dependency</span>&gt;
+
+<span class="comment"># Enable endpoints</span>
+management.endpoints.web.exposure.include=<span class="string">health,info,metrics,env</span>
+management.endpoint.health.show-details=<span class="string">always</span>`
+                    },
+                    {
+                        heading: 'Health Checks',
+                        content: `Monitor application health:
+                        <ul>
+                            <li><code>/actuator/health</code> - Overall health status</li>
+                            <li><code>/actuator/info</code> - Application information</li>
+                            <li><code>/actuator/metrics</code> - Application metrics</li>
+                            <li><code>/actuator/env</code> - Environment properties</li>
+                        </ul>`
+                    },
+                    {
+                        heading: 'Custom Health Indicator',
+                        content: `Create custom health checks:`,
+                        code: `<span class="annotation">@Component</span>
+<span class="keyword">public class</span> DatabaseHealthIndicator 
+        <span class="keyword">implements</span> HealthIndicator {
+    
+    <span class="keyword">private final</span> DataSource dataSource;
+    
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> Health health() {
+        <span class="keyword">try</span> (Connection conn = dataSource.getConnection()) {
+            <span class="keyword">return</span> Health.up()
+                .withDetail(<span class="string">"database"</span>, <span class="string">"Available"</span>)
+                .build();
+        } <span class="keyword">catch</span> (Exception e) {
+            <span class="keyword">return</span> Health.down()
+                .withDetail(<span class="string">"error"</span>, e.getMessage())
+                .build();
+        }
+    }
+}`
+                    },
+                    {
+                        heading: 'Prometheus & Grafana',
+                        content: `Integrate with Prometheus for metrics collection and Grafana for visualization.`
+                    }
+                ]
+            },
+            '11': {
+                title: 'Chapter 11: Asynchronous Processing',
+                sections: [
+                    {
+                        heading: 'Async Methods',
+                        content: `Execute methods asynchronously:`,
+                        code: `<span class="annotation">@Configuration</span>
+<span class="annotation">@EnableAsync</span>
+<span class="keyword">public class</span> AsyncConfig {
+    
+    <span class="annotation">@Bean</span>
+    <span class="keyword">public</span> Executor taskExecutor() {
+        ThreadPoolTaskExecutor executor = 
+            <span class="keyword">new</span> ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(2);
+        executor.setMaxPoolSize(5);
+        executor.setQueueCapacity(100);
+        executor.setThreadNamePrefix(<span class="string">"async-"</span>);
+        executor.initialize();
+        <span class="keyword">return</span> executor;
+    }
+}
+
+<span class="annotation">@Service</span>
+<span class="keyword">public class</span> EmailService {
+    
+    <span class="annotation">@Async</span>
+    <span class="keyword">public</span> CompletableFuture&lt;Void&gt; sendEmail(String to, String msg) {
+        <span class="comment">// Send email asynchronously</span>
+        emailClient.send(to, msg);
+        <span class="keyword">return</span> CompletableFuture.completedFuture(<span class="keyword">null</span>);
+    }
+}`
+                    },
+                    {
+                        heading: 'Scheduled Tasks',
+                        content: `Schedule recurring tasks:`,
+                        code: `<span class="annotation">@Component</span>
+<span class="annotation">@EnableScheduling</span>
+<span class="keyword">public class</span> ScheduledTasks {
+    
+    <span class="comment">// Run every 5 minutes</span>
+    <span class="annotation">@Scheduled</span>(fixedRate = 300000)
+    <span class="keyword">public void</span> cleanupOldData() {
+        <span class="comment">// Cleanup logic</span>
+    }
+    
+    <span class="comment">// Run every day at 2 AM</span>
+    <span class="annotation">@Scheduled</span>(cron = <span class="string">"0 0 2 * * ?"</span>)
+    <span class="keyword">public void</span> generateDailyReport() {
+        <span class="comment">// Report generation</span>
+    }
+}`
+                    },
+                    {
+                        heading: 'Virtual Threads (Java 21+)',
+                        content: `Java ${userPreferences.javaVersion} supports virtual threads for lightweight concurrency. Virtual threads enable high scalability with simple code.`
+                    }
+                ]
+            },
+            '12': {
+                title: 'Chapter 12: Microservices with Spring Boot',
+                sections: [
+                    {
+                        heading: 'Microservices Architecture',
+                        content: `Microservices break applications into small, independent services that communicate over HTTP or messaging.
+                        <ul>
+                            <li><strong>Service Discovery</strong> - Eureka, Consul</li>
+                            <li><strong>API Gateway</strong> - Spring Cloud Gateway</li>
+                            <li><strong>Load Balancing</strong> - Client-side with Ribbon</li>
+                            <li><strong>Circuit Breaker</strong> - Resilience4j</li>
+                        </ul>`
+                    },
+                    {
+                        heading: 'Service Communication',
+                        content: `Call other services with RestClient (Spring Boot 4.x):`,
+                        code: `<span class="annotation">@Service</span>
+<span class="keyword">public class</span> OrderService {
+    
+    <span class="keyword">private final</span> RestClient restClient;
+    
+    <span class="keyword">public</span> OrderService(RestClient.Builder builder) {
+        <span class="keyword">this</span>.restClient = builder
+            .baseUrl(<span class="string">"http://user-service"</span>)
+            .build();
+    }
+    
+    <span class="keyword">public</span> User getUserInfo(Long userId) {
+        <span class="keyword">return</span> restClient.get()
+            .uri(<span class="string">"/api/users/{id}"</span>, userId)
+            .retrieve()
+            .body(User.<span class="keyword">class</span>);
+    }
+}`
+                    },
+                    {
+                        heading: 'Circuit Breaker',
+                        content: `Implement fault tolerance:`,
+                        code: `<span class="annotation">@Service</span>
+<span class="keyword">public class</span> ResilientService {
+    
+    <span class="annotation">@CircuitBreaker</span>(name = <span class="string">"userService"</span>, 
+                    fallbackMethod = <span class="string">"getUserFallback"</span>)
+    <span class="keyword">public</span> User getUser(Long id) {
+        <span class="keyword">return</span> restClient.get()
+            .uri(<span class="string">"/users/{id}"</span>, id)
+            .retrieve()
+            .body(User.<span class="keyword">class</span>);
+    }
+    
+    <span class="keyword">private</span> User getUserFallback(Long id, Exception e) {
+        <span class="keyword">return new</span> User(id, <span class="string">"Unknown"</span>, <span class="string">"N/A"</span>);
+    }
+}`
+                    }
+                ]
+            },
+            '13': {
+                title: 'Chapter 13: Deployment and Best Practices',
+                sections: [
+                    {
+                        heading: 'Building for Production',
+                        content: `Build your application with ${userPreferences.buildTool}:`,
+                        code: userPreferences.buildTool === 'MAVEN' ?
+`<span class="comment"># Build JAR file</span>
+mvn clean package -DskipTests
+
+<span class="comment"># Run the JAR</span>
+java -jar target/myapp.jar
+
+<span class="comment"># With custom profile</span>
+java -jar target/myapp.jar --spring.profiles.active=prod` :
+`<span class="comment"># Build JAR file</span>
+./gradlew build
+
+<span class="comment"># Run the JAR</span>
+java -jar build/libs/myapp.jar
+
+<span class="comment"># With custom profile</span>
+java -jar build/libs/myapp.jar --spring.profiles.active=prod`
+                    },
+                    {
+                        heading: 'Docker Deployment',
+                        content: `Containerize your application:`,
+                        code: `<span class="comment"># Dockerfile</span>
+<span class="keyword">FROM</span> openjdk:25-slim
+<span class="keyword">WORKDIR</span> /app
+<span class="keyword">COPY</span> target/*.jar app.jar
+<span class="keyword">EXPOSE</span> 8080
+<span class="keyword">ENTRYPOINT</span> [<span class="string">"java"</span>, <span class="string">"-jar"</span>, <span class="string">"app.jar"</span>]
+
+<span class="comment"># Build and run</span>
+docker build -t myapp .
+docker run -p 8080:8080 myapp`
+                    },
+                    {
+                        heading: 'Best Practices',
+                        content: `<ul>
+                            <li><strong>Externalize Configuration</strong> - Use environment variables</li>
+                            <li><strong>Logging</strong> - Implement proper logging with SLF4J</li>
+                            <li><strong>Error Handling</strong> - Global exception handlers</li>
+                            <li><strong>Security</strong> - Never commit secrets, use OAuth/JWT</li>
+                            <li><strong>Testing</strong> - Maintain high test coverage</li>
+                            <li><strong>Monitoring</strong> - Use Actuator and APM tools</li>
+                            <li><strong>Documentation</strong> - Use Swagger/OpenAPI</li>
+                            <li><strong>CI/CD</strong> - Automate builds and deployments</li>
+                        </ul>`
+                    },
+                    {
+                        heading: 'Congratulations!',
+                        content: `You've completed the Spring Boot 4.x course! You now have the knowledge to build production-ready applications with Java ${userPreferences.javaVersion}, ${userPreferences.buildTool}, and Spring Boot 4.0.1. Keep practicing and exploring!`
+                    }
+                ]
+            }
+        };
+
+        function openChapter(chapterId) {
+            const chapter = chapterData[chapterId];
+            if (!chapter) {
+                alert('Chapter content coming soon!');
+                return;
+            }
+
+            // Hide dashboard, show chapter content
+            document.getElementById('platformContent').style.display = 'none';
+            document.getElementById('chapterContent').classList.add('active');
+
+            // Build chapter content HTML
+            let contentHTML = `
+                <div class="chapter-header">
+                    <h2>${chapter.title}</h2>
+                </div>
+            `;
+
+            chapter.sections.forEach(section => {
+                contentHTML += `
+                    <div class="chapter-section">
+                        <h3>${section.heading}</h3>
+                        <p>${section.content}</p>
+                        ${section.code ? `<div class="code-block">${section.code}</div>` : ''}
+                    </div>
+                `;
+            });
+
+            document.getElementById('chapterContentBody').innerHTML = contentHTML;
+
+            // Update progress
+            demoProgress.completedChapters = Math.min(demoProgress.completedChapters + 1, 13);
+            updateDashboard();
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function closeChapter() {
+            document.getElementById('chapterContent').classList.remove('active');
+            document.getElementById('platformContent').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function submitCode() {
+            const code = document.getElementById('codeInput').value;
+            const feedback = document.getElementById('feedback');
+            
+            if (code.includes('@GetMapping') && code.includes('return')) {
+                feedback.style.display = 'block';
+                feedback.style.background = '#d4edda';
+                feedback.style.color = '#155724';
+                feedback.innerHTML = '✅ Great job! Your solution is correct.<br>You successfully created a REST controller with a GET mapping.';
+                
+                // Award badge
+                demoProgress.badges++;
+                updateDashboard();
+            } else {
+                feedback.style.display = 'block';
+                feedback.style.background = '#f8d7da';
+                feedback.style.color = '#721c24';
+                feedback.innerHTML = '❌ Not quite right. Make sure to add a @GetMapping annotation and return a String.';
+            }
+        }
+
+        function showHint() {
+            alert('Hint: Use @GetMapping annotation to map a URL to your method.\nDon\'t forget to return a String message!');
+        }
+
+        function selectOption(element, answer) {
+            // Remove selection from all options
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            element.classList.add('selected');
+            selectedQuizAnswer = answer;
+        }
+
+        function submitQuiz() {
+            if (!selectedQuizAnswer) {
+                alert('Please select an answer first!');
+                return;
+            }
+
+            if (selectedQuizAnswer === 'b') {
+                alert('✅ Correct! IoC stands for Inversion of Control.\n\nInversion of Control is a fundamental principle in Spring where the framework manages object creation and lifecycle instead of the application code.');
+                demoProgress.quizCount++;
+                demoProgress.quizScore = ((demoProgress.quizScore * (demoProgress.quizCount - 1)) + 100) / demoProgress.quizCount;
+            } else {
+                alert('❌ Incorrect. The correct answer is "Inversion of Control".\n\nTry reviewing the Core Concepts chapter for more information.');
+                demoProgress.quizCount++;
+                demoProgress.quizScore = (demoProgress.quizScore * (demoProgress.quizCount - 1)) / demoProgress.quizCount;
+            }
+
+            updateDashboard();
+            selectedQuizAnswer = null;
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+        }
+
+        function updateDashboard() {
+            document.getElementById('completedChapters').textContent = demoProgress.completedChapters;
+            document.getElementById('progressFill').style.width = ((demoProgress.completedChapters / 13) * 100) + '%';
+            document.getElementById('badgeCount').textContent = demoProgress.badges;
+            document.getElementById('averageScore').textContent = Math.round(demoProgress.quizScore);
+            document.getElementById('quizCount').textContent = demoProgress.quizCount;
+
+            // Add new badges
+            const badgeDisplay = document.getElementById('badgeDisplay');
+            if (demoProgress.completedChapters >= 1 && demoProgress.badges >= 2) {
+                badgeDisplay.innerHTML = '<div class="badge">🌟 Beginner</div><div class="badge">🎯 First Chapter</div>';
+            }
+            if (demoProgress.completedChapters >= 3 && demoProgress.badges >= 3) {
+                badgeDisplay.innerHTML += '<div class="badge">🚀 Fast Learner</div>';
+            }
+            if (demoProgress.quizScore >= 80) {
+                badgeDisplay.innerHTML += '<div class="badge">💯 Quiz Master</div>';
+            }
+        }
+
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all your progress?\n\nThis will:\n- Clear all chapter progress\n- Reset all badges\n- Clear quiz scores\n- Return you to the setup wizard')) {
+                // Reset progress
+                demoProgress = {
+                    completedChapters: 0,
+                    badges: 1,
+                    quizScore: 0,
+                    quizCount: 0
+                };
+                
+                // Reset quiz selection
+                selectedQuizAnswer = null;
+                document.querySelectorAll('.quiz-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Reset code input
+                document.getElementById('codeInput').value = `@RestController
+public class HelloController {
+    
+    // Add your code here
+    
+}`;
+                
+                // Hide feedback
+                document.getElementById('feedback').style.display = 'none';
+                
+                // Update dashboard
+                updateDashboard();
+                
+                // Reset badge display
+                document.getElementById('badgeDisplay').innerHTML = '<div class="badge">🌟 Beginner</div>';
+                
+                // Go back to setup wizard
+                document.getElementById('platformContent').style.display = 'none';
+                document.getElementById('setupWizard').style.display = 'block';
+                
+                alert('✅ Progress reset successfully!\n\nYou can now set up your learning environment again and start fresh.');
+            }
+        }
+    </script>
+</body>
+</html>
